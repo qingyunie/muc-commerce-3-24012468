@@ -13,7 +13,7 @@ def answer_question(base_dir: Path, question: str) -> str:
     if any(word in normalized for word in ["多少用户", "用户数", "总用户"]):
         return f"数据集中共有{int(metrics['用户数']):,}名用户。"
 
-    # TODO 4-1：补充"流失率""偏好品类""生命周期风险"和"订单"四类问答。
+    #  4-1：补充"流失率""偏好品类""生命周期风险"和"订单"四类问答。
     # 每个回答都必须引用data目录中已经计算的指标，不得编造数值。
 
     # 2. 流失情况

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}生命周期分析 | 电商用户分析系统{% endblock %}
+{% block content %}
+<section class="hero compact">
+  <div>
+    <p class="eyebrow">LIFECYCLE ANALYSIS</p>
+    <h1>用户生命周期详情</h1>
+    <p class="lead">数据来自 data/segment_analysis.csv：共 {{ segment_total_users }} 名用户，其中流失 {{ segment_total_churned }} 人。</p>
+  </div>
+  <a class="button secondary" href="{{ url_for('dashboard') }}">返回数据看板</a>
+</section>
+
+<section class="panel">
+  <div class="panel-heading">
+    <div><p class="eyebrow">SEGMENT TABLE</p><h2>各生命周期阶段流失明细</h2></div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>生命周期阶段</th><th>用户数</th><th>流失人数</th><th>流失率</th><th>平均订单数</th><th>平均满意度</th></tr>
+      </thead>
+      <tbody>
+        {% for row in segment_rows %}
+        <tr>
+          <td>{{ row['阶段'] }}</td>
+          <td>{{ row['用户数'] }}</td>
+          <td>{{ row['流失人数'] }}</td>
+          <td>{{ row['流失率'] }}</td>
+          <td>{{ row['平均订单数'] }}</td>
+          <td>{{ row['平均满意度'] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="panel">
+  <p class="eyebrow">CHURN RATE BY STAGE</p>
+  <h2>各阶段流失率对比</h2>
+  <p class="hint">条形宽度 = 该阶段实际流失率百分比。</p>
+  <div class="bar-list">
+    {% for row in segment_rows %}
+    <div class="bar-row">
+      <span class="bar-label">{{ row['阶段'] }}</span>
+      <div class="bar-track"><div class="bar-fill" style="width: {{ row['流失率百分比'] }}%;"></div></div>
+      <span class="bar-value">{{ row['流失率'] }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<aside class="insight"><strong>数据观察：</strong>{{ segment_insight }}</aside>
+{% endblock %}

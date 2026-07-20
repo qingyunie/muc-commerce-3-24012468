@@ -35,7 +35,6 @@ th { color:var(--muted); font-size:13px; }
 .login-card label { display:block; margin:16px 0; color:var(--muted); }
 .login-card input { margin-top:7px; }
 .login-card button { width:100%; }
-
 .hint { color:var(--muted); font-size:13px; }
 .flash { margin-bottom:18px; padding:12px 16px; border-radius:8px; background:var(--sky); }
 .flash.danger { color:var(--danger); background:#fff0f0; }

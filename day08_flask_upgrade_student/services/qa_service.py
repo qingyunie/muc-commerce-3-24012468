@@ -7,7 +7,6 @@ def answer_question(base_dir: Path, question: str) -> str:
     data_dir = base_dir / "data"
     metrics_df = pd.read_csv(data_dir / "overall_metrics.csv", encoding="utf-8-sig")
 
-
     metrics = dict(zip(metrics_df["指标"], metrics_df["数值"]))
     normalized = question.replace(" ", "").lower()
 

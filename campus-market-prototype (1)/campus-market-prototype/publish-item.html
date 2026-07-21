@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>发布二手商品 - 校园轻集市</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<script src="https://unpkg.com/element-plus"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.form-section { background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #e2e8f0; }
+.upload-area { border: 2px dashed #cbd5e1; border-radius: 12px; padding: 40px; text-align: center; cursor: pointer; transition: all 0.3s; }
+.upload-area:hover { border-color: #2563EB; background: #f0f9ff; }
+.tip-card { background: #f8fafc; border-radius: 8px; padding: 16px; border-left: 4px solid #2563EB; }
+</style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+<div id="app">
+<nav class="navbar">
+<div class="nav-container">
+<a href="home.html" class="logo"><el-icon :size="28"><shop /></el-icon><span>校园轻集市</span></a>
+<div class="nav-links">
+<a href="home.html"><el-icon :size="16"><home-filled /></el-icon> 首页</a>
+<a href="category.html"><el-icon :size="16"><grid /></el-icon> 集市浏览</a>
+<a href="publish.html" class="active"><el-icon :size="16"><circle-plus /></el-icon> 发布信息</a>
+<a href="messages.html"><el-icon :size="16"><chat-dot-round /></el-icon> 消息</a>
+</div>
+<div class="flex items-center gap-4">
+<a href="profile.html" class="flex items-center gap-2 text-white/90 hover:text-white transition">
+<el-avatar :size="32" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<span class="text-sm">张同学</span>
+</a>
+</div>
+</div>
+</nav>
+<div class="page-container">
+<div class="breadcrumb">
+<a href="home.html">首页</a>
+<el-icon><arrow-right /></el-icon>
+<a href="publish.html">发布信息</a>
+<el-icon><arrow-right /></el-icon>
+<span>发布二手商品</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2">
+<div class="form-section">
+<h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2"><el-icon class="text-blue-600"><edit-pen /></el-icon> 商品信息</h2>
+<el-form label-position="top">
+<el-form-item label="商品名称" required>
+<el-input v-model="form.title" placeholder="例如：出闲置教材《软件工程导论》" size="large"></el-input>
+</el-form-item>
+<div class="grid grid-cols-2 gap-4">
+<el-form-item label="价格（元）" required>
+<el-input v-model="form.price" placeholder="输入价格" size="large"><template #prefix>¥</template></el-input>
+</el-form-item>
+<el-form-item label="原价（选填）">
+<el-input v-model="form.originalPrice" placeholder="输入原价" size="large"><template #prefix>¥</template></el-input>
+</el-form-item>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<el-form-item label="成色" required>
+<el-select v-model="form.condition" placeholder="选择成色" size="large" class="w-full">
+<el-option label="全新" value="new"></el-option>
+<el-option label="九成新" value="90"></el-option>
+<el-option label="八成新" value="80"></el-option>
+<el-option label="七成新" value="70"></el-option>
+<el-option label="六成新及以下" value="60"></el-option>
+</el-select>
+</el-form-item>
+<el-form-item label="是否可议价">
+<el-switch v-model="form.allowBargain" active-text="可议价" inactive-text="一口价"></el-switch>
+</el-form-item>
+</div>
+<el-form-item label="商品分类" required>
+<el-select v-model="form.category" placeholder="选择分类" size="large" class="w-full">
+<el-option label="教材书籍" value="book"></el-option>
+<el-option label="数码产品" value="digital"></el-option>
+<el-option label="生活用品" value="daily"></el-option>
+<el-option label="服饰鞋包" value="clothing"></el-option>
+<el-option label="运动户外" value="sports"></el-option>
+<el-option label="其他" value="other"></el-option>
+</el-select>
+</el-form-item>
+</el-form>
+</div>
+<div class="form-section">
+<h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2"><el-icon class="text-blue-600"><picture-rounded /></el-icon> 商品图片</h2>
+<div class="upload-area">
+<el-icon :size="48" class="text-slate-300 mb-2"><upload-filled /></el-icon>
+<p class="text-slate-500 mb-1">点击或拖拽上传图片</p>
+<p class="text-xs text-slate-400">支持 JPG、PNG 格式，最多上传 6 张</p>
+</div>
+</div>
+<div class="form-section">
+<h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2"><el-icon class="text-blue-600"><location /></el-icon> 交易信息</h2>
+<el-form label-position="top">
+<div class="grid grid-cols-2 gap-4">
+<el-form-item label="所在校区" required>
+<el-select v-model="form.campus" placeholder="选择校区" size="large" class="w-full">
+<el-option label="北校区" value="north"></el-option>
+<el-option label="南校区" value="south"></el-option>
+<el-option label="东校区" value="east"></el-option>
+<el-option label="西校区" value="west"></el-option>
+</el-select>
+</el-form-item>
+<el-form-item label="交易地点" required>
+<el-input v-model="form.location" placeholder="例如：图书馆门口" size="large"></el-input>
+</el-form-item>
+</div>
+<el-form-item label="详细描述" required>
+<el-input v-model="form.description" type="textarea" :rows="5" placeholder="请详细描述商品的品牌、型号、使用情况、瑕疵等信息..."></el-input>
+</el-form-item>
+<el-form-item label="标签">
+<el-input v-model="form.tags" placeholder="添加标签，用逗号分隔，例如：教材,软件工程,考研" size="large"></el-input>
+</el-form-item>
+</el-form>
+</div>
+<div class="flex gap-4">
+<el-button type="primary" size="large" class="flex-1"><el-icon class="mr-1"><check /></el-icon> 立即发布</el-button>
+<el-button size="large"><el-icon class="mr-1"><document /></el-icon> 保存草稿</el-button>
+</div>
+</div>
+<div class="lg:col-span-1">
+<div class="tip-card mb-4">
+<h3 class="font-bold text-slate-800 mb-2">发布提示</h3>
+<ul class="text-sm text-slate-600 space-y-2">
+<li>· 填写准确的商品信息有助于快速成交</li>
+<li>· 上传清晰图片可提高浏览量</li>
+<li>· 合理定价更容易吸引买家</li>
+<li>· 选择公共场所交易更安全</li>
+</ul>
+</div>
+<div class="bg-white rounded-xl p-6 border border-slate-100">
+<h3 class="font-bold text-slate-800 mb-4">发布流程</h3>
+<el-steps direction="vertical" :active="1">
+<el-step title="填写信息" description="填写商品基本信息"></el-step>
+<el-step title="上传图片" description="上传商品实物图"></el-step>
+<el-step title="提交审核" description="等待平台审核"></el-step>
+<el-step title="发布成功" description="信息对外展示"></el-step>
+</el-steps>
+</div>
+</div>
+</div>
+</div>
+<footer class="bg-slate-800 text-slate-400 py-8 mt-12">
+<div class="page-container text-center"><p class="text-sm">校园轻集市 - 让校园生活更便捷</p></div>
+</footer>
+</div>
+<script>
+const { createApp, ref } = Vue;
+const app = createApp({
+setup() {
+const form = ref({ title: '', price: '', originalPrice: '', condition: '', allowBargain: true, category: '', campus: '', location: '', description: '', tags: '' });
+return { form };
+}
+});
+app.use(ElementPlus);
+app.mount('#app');
+</script>
+</body>
+</html>

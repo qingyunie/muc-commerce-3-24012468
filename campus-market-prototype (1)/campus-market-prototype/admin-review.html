@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>信息审核 - 校园轻集市</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<script src="https://unpkg.com/element-plus"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.admin-sidebar { background: #1e293b; color: white; min-height: 100vh; width: 240px; position: fixed; left: 0; top: 0; }
+.admin-main { margin-left: 240px; min-height: 100vh; background: #f8fafc; }
+.menu-item { padding: 12px 24px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.7); text-decoration: none; }
+.menu-item:hover, .menu-item.active { background: #2563EB; color: white; }
+</style>
+</head>
+<body>
+<div id="app">
+<div class="admin-sidebar">
+<div class="p-6 border-b border-slate-700">
+<div class="flex items-center gap-3">
+<el-icon :size="28"><shop /></el-icon>
+<span class="text-xl font-bold">管理后台</span>
+</div>
+</div>
+<div class="py-4">
+<a href="admin-dashboard.html" class="menu-item"><el-icon><data-line /></el-icon><span>数据概览</span></a>
+<a href="admin-review.html" class="menu-item active"><el-icon><check /></el-icon><span>信息审核</span><el-badge :value="12" class="ml-auto"></el-badge></a>
+<a href="category.html" class="menu-item"><el-icon><grid /></el-icon><span>信息管理</span></a>
+<div class="menu-item"><el-icon><user /></el-icon><span>用户管理</span></div>
+<div class="menu-item"><el-icon><warning /></el-icon><span>举报处理</span><el-badge :value="3" class="ml-auto" type="danger"></el-badge></div>
+<div class="menu-item"><el-icon><setting /></el-icon><span>系统设置</span></div>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-6 border-t border-slate-700">
+<a href="home.html" class="flex items-center gap-2 text-slate-400 hover:text-white transition"><el-icon><arrow-left /></el-icon><span>返回前台</span></a>
+</div>
+</div>
+<div class="admin-main">
+<div class="bg-white border-b border-slate-200 p-4 flex items-center justify-between">
+<h1 class="text-xl font-bold text-slate-800">信息审核</h1>
+<div class="flex items-center gap-4">
+<span class="text-sm text-slate-500">2026年7月21日</span>
+<el-avatar :size="36" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar>
+</div>
+</div>
+<div class="p-6">
+<div class="bg-white rounded-xl p-4 border border-slate-100 shadow-sm mb-6">
+<div class="flex flex-wrap gap-4">
+<el-input v-model="searchKeyword" placeholder="搜索标题/发布者" style="width: 240px" clearable>
+<template #prefix><el-icon><search /></el-icon></template>
+</el-input>
+<el-select v-model="filterType" placeholder="信息类型" style="width: 140px">
+<el-option label="全部类型" value=""></el-option>
+<el-option label="二手交易" value="secondhand"></el-option>
+<el-option label="失物招领" value="lostfound"></el-option>
+<el-option label="拼单搭子" value="group"></el-option>
+<el-option label="跑腿委托" value="errand"></el-option>
+</el-select>
+<el-select v-model="filterStatus" placeholder="审核状态" style="width: 140px">
+<el-option label="全部状态" value=""></el-option>
+<el-option label="待审核" value="pending"></el-option>
+<el-option label="已通过" value="approved"></el-option>
+<el-option label="已驳回" value="rejected"></el-option>
+</el-select>
+<el-button type="primary"><el-icon class="mr-1"><search /></el-icon> 搜索</el-button>
+</div>
+</div>
+<div class="bg-white rounded-xl border border-slate-100 shadow-sm">
+<el-table :data="reviewList" style="width: 100%">
+<el-table-column type="selection" width="55"></el-table-column>
+<el-table-column prop="id" label="编号" width="140"></el-table-column>
+<el-table-column label="信息标题" min-width="200">
+<template #default="scope">
+<div class="flex items-center gap-2">
+<img :src="scope.row.image" class="w-10 h-10 object-cover rounded-lg">
+<span class="text-sm">{{ scope.row.title }}</span>
+</div>
+</template>
+</el-table-column>
+<el-table-column prop="type" label="类型" width="100">
+<template #default="scope">
+<el-tag :type="getTypeTag(scope.row.type)" size="small">{{ scope.row.type }}</el-tag>
+</template>
+</el-table-column>
+<el-table-column prop="publisher" label="发布者" width="120"></el-table-column>
+<el-table-column prop="campus" label="校区" width="100"></el-table-column>
+<el-table-column prop="time" label="提交时间" width="160"></el-table-column>
+<el-table-column prop="status" label="状态" width="100">
+<template #default="scope">
+<el-tag :type="scope.row.status === '待审核' ? 'warning' : scope.row.status === '已通过' ? 'success' : 'danger'" size="small">{{ scope.row.status }}</el-tag>
+</template>
+</el-table-column>
+<el-table-column label="操作" width="200" fixed="right">
+<template #default="scope">
+<el-button v-if="scope.row.status === '待审核'" type="success" size="small" @click="handleApprove(scope.row)">通过</el-button>
+<el-button v-if="scope.row.status === '待审核'" type="danger" size="small" @click="handleReject(scope.row)">驳回</el-button>
+<el-button type="primary" text size="small" @click="showDetail = true">查看</el-button>
+</template>
+</el-table-column>
+</el-table>
+<div class="p-4 flex justify-center">
+<el-pagination background layout="prev, pager, next, jumper" :total="128" :page-size="10"></el-pagination>
+</div>
+</div>
+</div>
+</div>
+<el-dialog v-model="showDetail" title="信息详情" width="600px">
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=200&h=200&fit=crop" class="w-24 h-24 object-cover rounded-lg">
+<div>
+<h3 class="font-bold text-slate-800">出闲置教材《软件工程导论》</h3>
+<p class="text-sm text-slate-500 mt-1">二手交易 · 北校区</p>
+<p class="text-lg font-bold text-red-500 mt-1">¥35</p>
+</div>
+</div>
+<div class="bg-slate-50 rounded-lg p-4">
+<p class="text-sm text-slate-600">上学期刚买的，基本没用过，现在毕业了转出。可小刀，北校区面交。</p>
+</div>
+<div class="grid grid-cols-2 gap-4 text-sm">
+<div><span class="text-slate-400">发布者：</span>李同学</div>
+<div><span class="text-slate-400">联系方式：</span>138****8888</div>
+<div><span class="text-slate-400">提交时间：</span>2026-07-21 10:00</div>
+<div><span class="text-slate-400">状态：</span><el-tag type="warning" size="small">待审核</el-tag></div>
+</div>
+</div>
+<template #footer>
+<el-button @click="showDetail = false">关闭</el-button>
+<el-button type="danger" @click="showDetail = false">驳回</el-button>
+<el-button type="success" @click="showDetail = false">通过</el-button>
+</template>
+</el-dialog>
+</div>
+<script>
+const { createApp, ref } = Vue;
+const app = createApp({
+setup() {
+const searchKeyword = ref('');
+const filterType = ref('');
+const filterStatus = ref('');
+const showDetail = ref(false);
+const reviewList = ref([
+{ id: 'SH20260721001', title: '出闲置教材《软件工程导论》', type: '二手交易', publisher: '李同学', campus: '北校区', time: '2026-07-21 10:00', status: '待审核', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=100&h=100&fit=crop' },
+{ id: 'LF20260721005', title: '拾到校园卡一张', type: '失物招领', publisher: '王同学', campus: '东校区', time: '2026-07-21 09:30', status: '待审核', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=100&h=100&fit=crop' },
+{ id: 'GP20260721003', title: '东区食堂奶茶拼单', type: '拼单搭子', publisher: '陈同学', campus: '东校区', time: '2026-07-21 09:00', status: '待审核', image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=100&h=100&fit=crop' },
+{ id: 'RW20260721008', title: '求帮取快递到6栋宿舍', type: '跑腿委托', publisher: '赵同学', campus: '南校区', time: '2026-07-21 08:30', status: '已通过', image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=100&h=100&fit=crop' },
+{ id: 'SH20260721002', title: '索尼降噪耳机 WH-1000XM4', type: '二手交易', publisher: '孙同学', campus: '南校区', time: '2026-07-21 08:00', status: '已驳回', image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100&h=100&fit=crop' }
+]);
+const getTypeTag = (type) => {
+const map = { '二手交易': 'warning', '失物招领': 'danger', '拼单搭子': 'info', '跑腿委托': 'primary' };
+return map[type] || 'info';
+};
+const handleApprove = (row) => { row.status = '已通过'; };
+const handleReject = (row) => { row.status = '已驳回'; };
+return { searchKeyword, filterType, filterStatus, showDetail, reviewList, getTypeTag, handleApprove, handleReject };
+}
+});
+app.use(ElementPlus);
+app.mount('#app');
+</script>
+</body>
+</html>

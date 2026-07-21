@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>登录 - 校园轻集市</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<script src="https://unpkg.com/element-plus"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.login-bg { background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 50%, #1E40AF 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+.login-card { background: white; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); width: 100%; max-width: 440px; padding: 40px; }
+</style>
+</head>
+<body>
+<div id="app">
+<div class="login-bg">
+<div class="login-card">
+<div class="text-center mb-8">
+<div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+<el-icon :size="32" class="text-blue-600"><shop /></el-icon>
+</div>
+<h1 class="text-2xl font-bold text-slate-800">欢迎回到校园轻集市</h1>
+<p class="text-sm text-slate-500 mt-2">登录后即可发布信息、收藏商品、参与拼单</p>
+</div>
+<el-form>
+<el-form-item>
+<el-input v-model="form.username" placeholder="学号/手机号/邮箱" size="large" prefix-icon="User"></el-input>
+</el-form-item>
+<el-form-item>
+<el-input v-model="form.password" type="password" placeholder="密码" size="large" prefix-icon="Lock" show-password></el-input>
+</el-form-item>
+<el-form-item>
+<div class="flex items-center justify-between">
+<el-checkbox v-model="form.remember">记住我</el-checkbox>
+<a href="#" class="text-sm text-blue-600 hover:text-blue-700">忘记密码？</a>
+</div>
+</el-form-item>
+<el-form-item>
+<a href="home.html" class="w-full"><el-button type="primary" size="large" class="w-full">登录</el-button></a>
+</el-form-item>
+</el-form>
+<div class="relative my-6">
+<div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
+<div class="relative flex justify-center text-sm"><span class="px-2 bg-white text-slate-500">其他登录方式</span></div>
+</div>
+<div class="flex justify-center gap-4">
+<el-button circle size="large"><el-icon><chat-dot-round /></el-icon></el-button>
+<el-button circle size="large"><el-icon><iphone /></el-icon></el-button>
+</div>
+<div class="text-center mt-6 text-sm text-slate-500">
+还没有账号？<a href="register.html" class="text-blue-600 hover:text-blue-700 font-medium">立即注册</a>
+</div>
+</div>
+</div>
+</div>
+<script>
+const { createApp, ref } = Vue;
+const app = createApp({
+setup() {
+const form = ref({ username: '', password: '', remember: false });
+return { form };
+}
+});
+app.use(ElementPlus);
+app.mount('#app');
+</script>
+</body>
+</html>

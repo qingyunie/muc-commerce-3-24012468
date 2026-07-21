@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>拼单搭子详情 - 校园轻集市</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<script src="https://unpkg.com/element-plus"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.progress-bar { height: 8px; border-radius: 4px; background: #e2e8f0; overflow: hidden; }
+.progress-bar .fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #10B981, #34D399); transition: width 0.5s ease; }
+.member-avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-left: -8px; }
+.member-avatar:first-child { margin-left: 0; }
+.countdown-box { background: linear-gradient(135deg, #F0F9FF, #E0F2FE); border: 1px solid #BAE6FD; }
+.join-btn { background: linear-gradient(135deg, #2563EB, #1D4ED8); transition: all 0.3s; }
+.join-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); }
+.rule-item { display: flex; align-items: flex-start; gap: 8px; padding: 8px 0; }
+.rule-item .dot { width: 6px; height: 6px; border-radius: 50%; background: #2563EB; margin-top: 8px; flex-shrink: 0; }
+</style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+<div id="app">
+<nav class="navbar">
+<div class="nav-container">
+<a href="home.html" class="logo"><el-icon :size="28"><shop /></el-icon><span>校园轻集市</span></a>
+<div class="nav-links">
+<a href="home.html"><el-icon :size="16"><home-filled /></el-icon> 首页</a>
+<a href="category.html"><el-icon :size="16"><grid /></el-icon> 集市浏览</a>
+<a href="publish.html"><el-icon :size="16"><circle-plus /></el-icon> 发布信息</a>
+<a href="messages.html"><el-icon :size="16"><chat-dot-round /></el-icon> 消息</a>
+</div>
+<div class="flex items-center gap-4">
+<a href="profile.html" class="flex items-center gap-2 text-white/90 hover:text-white transition">
+<el-avatar :size="32" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<span class="text-sm">张同学</span>
+</a>
+</div>
+</div>
+</nav>
+<div class="page-container">
+<div class="breadcrumb">
+<a href="home.html">首页</a>
+<el-icon><arrow-right /></el-icon>
+<a href="category.html">集市浏览</a>
+<el-icon><arrow-right /></el-icon>
+<a href="category.html?type=group">拼单搭子</a>
+<el-icon><arrow-right /></el-icon>
+<span>详情</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2">
+<div class="bg-white rounded-xl overflow-hidden border border-slate-100 shadow-sm mb-6">
+<img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&h=400&fit=crop" alt="拼奶茶" class="w-full h-64 object-cover">
+<div class="p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="tag tag-info">拼单搭子</span>
+<span class="tag tag-success">进行中</span>
+<span class="tag tag-warning">热门</span>
+</div>
+<h1 class="text-2xl font-bold text-slate-800 mb-2">东区食堂三楼拼奶茶，还差 2 人，满10杯免配送费</h1>
+<div class="flex items-center gap-4 text-sm text-slate-500">
+<span class="flex items-center gap-1"><el-icon><clock /></el-icon> 发布于 1小时前</span>
+<span class="flex items-center gap-1"><el-icon><view /></el-icon> 浏览 234 次</span>
+<span class="flex items-center gap-1"><el-icon><star /></el-icon> 收藏 15 人</span>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-xl p-6 border border-slate-100 shadow-sm mb-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-bold text-slate-800">参与进度</h3>
+<span class="text-sm text-slate-500">3/5 人</span>
+</div>
+<div class="progress-bar mb-4"><div class="fill" style="width: 60%"></div></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop&crop=face" class="member-avatar">
+<img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop&crop=face" class="member-avatar">
+<img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50&h=50&fit=crop&crop=face" class="member-avatar">
+<div class="member-avatar bg-slate-100 flex items-center justify-center text-slate-400 text-xs font-medium ml-0">+2</div>
+</div>
+<span class="text-sm text-green-600 font-medium">还差 2 人</span>
+</div>
+</div>
+<div class="bg-white rounded-xl p-6 border border-slate-100 shadow-sm mb-6">
+<h3 class="font-bold text-slate-800 mb-4">拼单详情</h3>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="bg-slate-50 rounded-lg p-4"><div class="text-xs text-slate-400 mb-1">拼单主题</div><div class="font-semibold text-slate-700">喜茶拼单</div></div>
+<div class="bg-slate-50 rounded-lg p-4"><div class="text-xs text-slate-400 mb-1">目标人数</div><div class="font-semibold text-slate-700">5 人</div></div>
+<div class="bg-slate-50 rounded-lg p-4"><div class="text-xs text-slate-400 mb-1">当前人数</div><div class="font-semibold text-blue-600">3 人</div></div>
+<div class="bg-slate-50 rounded-lg p-4"><div class="text-xs text-slate-400 mb-1">集合地点</div><div class="font-semibold text-slate-700">东区食堂三楼</div></div>
+<div class="bg-slate-50 rounded-lg p-4"><div class="text-xs text-slate-400 mb-1">人均预算</div><div class="font-semibold text-slate-700">约 ¥15-25</div></div>
+<div class="bg-slate-50 rounded-lg p-4"><div class="text-xs text-slate-400 mb-1">所在校区</div><div class="font-semibold text-slate-700">东校区</div></div>
+</div>
+<div class="border-t border-slate-100 pt-4">
+<h4 class="font-semibold text-slate-800 mb-2">拼单说明</h4>
+<div class="text-slate-600 leading-relaxed space-y-2">
+<p>想拼喜茶，满10杯免配送费，目前3人，还差2人。</p>
+<p>每人可以点自己喜欢的口味，下单后统一配送，送到东区食堂三楼门口。</p>
+<p>截止时间下午5点，如果人数不够就取消，大家注意看消息。</p>
+</div>
+</div>
+<div class="border-t border-slate-100 pt-4 mt-4">
+<h4 class="font-semibold text-slate-800 mb-2">拼单规则</h4>
+<div class="text-slate-600 text-sm">
+<div class="rule-item"><div class="dot"></div><span>满5人成团，不满自动取消</span></div>
+<div class="rule-item"><div class="dot"></div><span>截止时间为今日17:00</span></div>
+<div class="rule-item"><div class="dot"></div><span>配送至东区食堂三楼门口</span></div>
+<div class="rule-item"><div class="dot"></div><span>费用按实际订单均摊</span></div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-xl p-6 border border-slate-100 shadow-sm mb-6">
+<h3 class="font-bold text-slate-800 mb-4">已参与成员</h3>
+<div class="space-y-4">
+<div class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+<el-avatar :size="40" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop&crop=face"></el-avatar>
+<div class="flex-1">
+<div class="font-medium text-slate-800">陈同学 <span class="text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full ml-2">发起人</span></div>
+<div class="text-xs text-slate-500">经济管理学院 · 1小时前加入</div>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-lg">
+<el-avatar :size="40" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop&crop=face"></el-avatar>
+<div class="flex-1">
+<div class="font-medium text-slate-800">赵同学</div>
+<div class="text-xs text-slate-500">计算机学院 · 30分钟前加入</div>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-lg">
+<el-avatar :size="40" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50&h=50&fit=crop&crop=face"></el-avatar>
+<div class="flex-1">
+<div class="font-medium text-slate-800">张同学（你）</div>
+<div class="text-xs text-slate-500">外国语学院 · 10分钟前加入</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-1">
+<div class="countdown-box rounded-xl p-6 mb-6">
+<div class="text-center">
+<el-icon :size="32" class="text-blue-500 mb-2"><timer /></el-icon>
+<h3 class="font-bold text-slate-800 mb-1">距离截止</h3>
+<div class="text-3xl font-bold text-blue-600 font-mono">03:42:18</div>
+<p class="text-sm text-slate-500 mt-1">今日 17:00 截止</p>
+</div>
+</div>
+<div class="bg-white rounded-xl p-6 border border-slate-100 shadow-sm mb-6">
+<div class="flex items-center gap-4 mb-4">
+<el-avatar :size="56" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<div>
+<h3 class="font-bold text-slate-800">陈同学</h3>
+<p class="text-sm text-slate-500">经济管理学院 · 东校区</p>
+</div>
+</div>
+<div class="flex items-center gap-2 mb-4 p-3 bg-blue-50 rounded-lg">
+<el-icon class="text-blue-600"><trophy /></el-icon>
+<span class="text-sm text-blue-700">已成功发起 12 次拼单</span>
+</div>
+<div class="space-y-2">
+<el-button type="primary" size="large" class="w-full join-btn" @click="showJoin = true"><el-icon class="mr-1"><circle-plus /></el-icon> 立即加入</el-button>
+<el-button :type="isFavorited ? 'danger' : 'default'" size="large" class="w-full" @click="isFavorited = !isFavorited">
+<el-icon class="mr-1"><star-filled v-if="isFavorited" /><star v-else /></el-icon>{{ isFavorited ? '已收藏' : '收藏拼单' }}
+</el-button>
+<el-button size="large" class="w-full"><el-icon class="mr-1"><share /></el-icon> 分享给好友</el-button>
+</div>
+</div>
+<div class="bg-teal-50 rounded-xl p-4 border border-teal-200 mb-6">
+<div class="flex items-center gap-2 mb-2"><el-icon class="text-teal-600"><info-filled /></el-icon><span class="font-semibold text-teal-800">拼单须知</span></div>
+<ul class="text-sm text-teal-700 space-y-1">
+<li>· 加入后请保持消息畅通</li>
+<li>· 取消需提前告知发起人</li>
+<li>· 费用按实际订单均摊</li>
+<li>· 成团后不可随意退出</li>
+</ul>
+</div>
+<div class="bg-white rounded-xl p-6 border border-slate-100 shadow-sm">
+<h3 class="font-bold text-slate-800 mb-4">相关拼单</h3>
+<div class="space-y-4">
+<a href="group-detail.html" class="flex gap-3 p-3 rounded-lg hover:bg-slate-50 transition">
+<img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=100&h=100&fit=crop" class="w-16 h-16 object-cover rounded-lg">
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-medium text-slate-800 truncate">周五拼车去高铁站</h4>
+<p class="text-xs text-slate-400 mt-1">2/4人 · 北校区</p>
+</div>
+</a>
+<a href="group-detail.html" class="flex gap-3 p-3 rounded-lg hover:bg-slate-50 transition">
+<img src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=100&h=100&fit=crop" class="w-16 h-16 object-cover rounded-lg">
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-medium text-slate-800 truncate">水果团购，新鲜直达</h4>
+<p class="text-xs text-slate-400 mt-1">4/6人 · 南校区</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<el-dialog v-model="showJoin" title="加入拼单" width="500px">
+<el-alert title="确认加入拼单" type="info" :closable="false" class="mb-4">
+<div class="text-sm mt-2">加入后请保持消息畅通，关注拼单进度。</div>
+</el-alert>
+<el-form label-position="top">
+<el-form-item label="备注（可选）">
+<el-input type="textarea" :rows="3" placeholder="例如：我想点多肉葡萄，去冰少糖..."></el-input>
+</el-form-item>
+<el-form-item>
+<el-checkbox>我同意拼单规则，成团后不随意退出</el-checkbox>
+</el-form-item>
+</el-form>
+<template #footer>
+<el-button @click="showJoin = false">取消</el-button>
+<el-button type="primary" @click="showJoin = false"><el-icon class="mr-1"><circle-check /></el-icon> 确认加入</el-button>
+</template>
+</el-dialog>
+<footer class="bg-slate-800 text-slate-400 py-8 mt-12">
+<div class="page-container text-center"><p class="text-sm">校园轻集市 - 让校园生活更便捷</p></div>
+</footer>
+</div>
+<script>
+const { createApp, ref } = Vue;
+const app = createApp({
+setup() {
+const isFavorited = ref(false);
+const showJoin = ref(false);
+return { isFavorited, showJoin };
+}
+});
+app.use(ElementPlus);
+app.mount('#app');
+</script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>发布跑腿委托 - 校园轻集市</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<script src="https://unpkg.com/element-plus"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.form-section { background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #e2e8f0; }
+</style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+<div id="app">
+<nav class="navbar">
+<div class="nav-container">
+<a href="home.html" class="logo"><el-icon :size="28"><shop /></el-icon><span>校园轻集市</span></a>
+<div class="nav-links">
+<a href="home.html"><el-icon :size="16"><home-filled /></el-icon> 首页</a>
+<a href="category.html"><el-icon :size="16"><grid /></el-icon> 集市浏览</a>
+<a href="publish.html" class="active"><el-icon :size="16"><circle-plus /></el-icon> 发布信息</a>
+<a href="messages.html"><el-icon :size="16"><chat-dot-round /></el-icon> 消息</a>
+</div>
+<div class="flex items-center gap-4">
+<a href="profile.html" class="flex items-center gap-2 text-white/90 hover:text-white transition">
+<el-avatar :size="32" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<span class="text-sm">张同学</span>
+</a>
+</div>
+</div>
+</nav>
+<div class="page-container">
+<div class="breadcrumb">
+<a href="home.html">首页</a>
+<el-icon><arrow-right /></el-icon>
+<a href="publish.html">发布信息</a>
+<el-icon><arrow-right /></el-icon>
+<span>发布跑腿委托</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2">
+<div class="form-section">
+<h2 class="text-xl font-bold text-slate-800 mb-6">任务信息</h2>
+<el-form label-position="top">
+<el-form-item label="任务标题" required>
+<el-input v-model="form.title" placeholder="例如：求帮取快递到6栋宿舍" size="large"></el-input>
+</el-form-item>
+<el-form-item label="任务类型" required>
+<el-select v-model="form.taskType" placeholder="选择类型" size="large" class="w-full">
+<el-option label="代取快递" value="express"></el-option>
+<el-option label="代买物品" value="buy"></el-option>
+<el-option label="代送文件" value="deliver"></el-option>
+<el-option label="代排队" value="queue"></el-option>
+<el-option label="其他任务" value="other"></el-option>
+</el-select>
+</el-form-item>
+<el-form-item label="任务内容" required>
+<el-input v-model="form.content" type="textarea" :rows="4" placeholder="请详细描述任务内容，例如：快递在菜鸟驿站，需要送到6栋宿舍楼下..."></el-input>
+</el-form-item>
+<div class="grid grid-cols-2 gap-4">
+<el-form-item label="送达地点" required>
+<el-input v-model="form.deliverLocation" placeholder="例如：6栋宿舍楼下" size="large"></el-input>
+</el-form-item>
+<el-form-item label="期望完成时间" required>
+<el-date-picker v-model="form.expectedTime" type="datetime" placeholder="选择时间" size="large" class="w-full"></el-date-picker>
+</el-form-item>
+</div>
+<el-form-item label="酬劳金额" required>
+<el-input v-model="form.reward" placeholder="输入酬劳金额" size="large"><template #prefix>¥</template></el-input>
+</el-form-item>
+<el-form-item label="所在校区" required>
+<el-select v-model="form.campus" placeholder="选择校区" size="large" class="w-full">
+<el-option label="北校区" value="north"></el-option>
+<el-option label="南校区" value="south"></el-option>
+<el-option label="东校区" value="east"></el-option>
+<el-option label="西校区" value="west"></el-option>
+</el-select>
+</el-form-item>
+<el-form-item label="任务要求">
+<el-input v-model="form.requirements" type="textarea" :rows="3" placeholder="例如：需要小推车、请送到宿舍门口等..."></el-input>
+</el-form-item>
+<el-form-item label="联系方式">
+<el-input v-model="form.contact" placeholder="例如：接单后通过消息联系" size="large"></el-input>
+</el-form-item>
+</el-form>
+</div>
+<div class="flex gap-4">
+<el-button type="primary" size="large" class="flex-1"><el-icon class="mr-1"><check /></el-icon> 立即发布</el-button>
+<el-button size="large"><el-icon class="mr-1"><document /></el-icon> 保存草稿</el-button>
+</div>
+</div>
+<div class="lg:col-span-1">
+<div class="bg-indigo-50 rounded-xl p-6 border border-indigo-200 mb-4">
+<h3 class="font-bold text-indigo-800 mb-2">发布提示</h3>
+<ul class="text-sm text-indigo-700 space-y-2">
+<li>· 明确任务内容和送达地点</li>
+<li>· 设置合理的酬劳金额</li>
+<li>· 说明任务特殊要求</li>
+<li>· 保持联系方式畅通</li>
+<li>· 任务完成后及时确认</li>
+</ul>
+</div>
+<div class="bg-white rounded-xl p-6 border border-slate-100">
+<h3 class="font-bold text-slate-800 mb-4">酬劳参考</h3>
+<div class="space-y-3 text-sm text-slate-600">
+<div class="flex justify-between"><span>代取快递（小件）</span><span>¥3-5</span></div>
+<div class="flex justify-between"><span>代取快递（大件）</span><span>¥5-10</span></div>
+<div class="flex justify-between"><span>代买物品</span><span>¥3-5</span></div>
+<div class="flex justify-between"><span>代送文件</span><span>¥2-4</span></div>
+<div class="flex justify-between"><span>代排队</span><span>¥5-10</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class="bg-slate-800 text-slate-400 py-8 mt-12">
+<div class="page-container text-center"><p class="text-sm">校园轻集市 - 让校园生活更便捷</p></div>
+</footer>
+</div>
+<script>
+const { createApp, ref } = Vue;
+const app = createApp({
+setup() {
+const form = ref({ title: '', taskType: '', content: '', deliverLocation: '', expectedTime: '', reward: '', campus: '', requirements: '', contact: '' });
+return { form };
+}
+});
+app.use(ElementPlus);
+app.mount('#app');
+</script>
+</body>
+</html>

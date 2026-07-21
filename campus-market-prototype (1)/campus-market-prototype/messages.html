@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>消息中心 - 校园轻集市</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<script src="https://unpkg.com/element-plus"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.conversation-item { transition: all 0.2s; cursor: pointer; }
+.conversation-item:hover { background: #f8fafc; }
+.conversation-item.unread { background: #eff6ff; }
+.conversation-item.unread:hover { background: #dbeafe; }
+.message-preview { color: #64748b; font-size: 13px; }
+.conversation-item.unread .message-preview { color: #1e293b; font-weight: 500; }
+.time-badge { font-size: 12px; color: #94a3b8; }
+</style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+<div id="app">
+<nav class="navbar">
+<div class="nav-container">
+<a href="home.html" class="logo"><el-icon :size="28"><shop /></el-icon><span>校园轻集市</span></a>
+<div class="nav-links">
+<a href="home.html"><el-icon :size="16"><home-filled /></el-icon> 首页</a>
+<a href="category.html"><el-icon :size="16"><grid /></el-icon> 集市浏览</a>
+<a href="publish.html"><el-icon :size="16"><circle-plus /></el-icon> 发布信息</a>
+<a href="messages.html" class="active"><el-icon :size="16"><chat-dot-round /></el-icon> 消息</a>
+</div>
+<div class="flex items-center gap-4">
+<a href="profile.html" class="flex items-center gap-2 text-white/90 hover:text-white transition">
+<el-avatar :size="32" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<span class="text-sm">张同学</span>
+</a>
+</div>
+</div>
+</nav>
+<div class="page-container">
+<div class="breadcrumb">
+<a href="home.html">首页</a>
+<el-icon><arrow-right /></el-icon>
+<span>消息中心</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+<div class="lg:col-span-1">
+<div class="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
+<div class="p-4 border-b border-slate-100">
+<el-input v-model="searchKeyword" placeholder="搜索联系人" size="small" clearable>
+<template #prefix><el-icon><search /></el-icon></template>
+</el-input>
+</div>
+<div class="divide-y divide-slate-100">
+<a href="chat.html" class="conversation-item unread flex items-center gap-3 p-4">
+<div class="relative">
+<el-avatar :size="48" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<el-badge :value="2" class="absolute -top-1 -right-1"></el-badge>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-1">
+<span class="font-semibold text-slate-800">李同学</span>
+<span class="time-badge">10:30</span>
+</div>
+<p class="message-preview truncate">可以便宜点吗？30出不出？</p>
+</div>
+</a>
+<a href="chat.html" class="conversation-item flex items-center gap-3 p-4">
+<el-avatar :size="48" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-1">
+<span class="font-semibold text-slate-800">王同学</span>
+<span class="time-badge">昨天</span>
+</div>
+<p class="message-preview truncate">校园卡已经交给食堂服务台了</p>
+</div>
+</a>
+<a href="chat.html" class="conversation-item unread flex items-center gap-3 p-4">
+<div class="relative">
+<el-avatar :size="48" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<el-badge :value="1" class="absolute -top-1 -right-1"></el-badge>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-1">
+<span class="font-semibold text-slate-800">陈同学</span>
+<span class="time-badge">昨天</span>
+</div>
+<p class="message-preview truncate">拼单还差2人，你要加入吗？</p>
+</div>
+</a>
+<a href="chat.html" class="conversation-item flex items-center gap-3 p-4">
+<el-avatar :size="48" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-1">
+<span class="font-semibold text-slate-800">赵同学</span>
+<span class="time-badge">2天前</span>
+</div>
+<p class="message-preview truncate">快递已经取到了，放在楼下了</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+<div class="lg:col-span-3">
+<div class="bg-white rounded-xl border border-slate-100 shadow-sm h-full flex flex-col">
+<div class="p-4 border-b border-slate-100 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<el-avatar :size="40" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<div>
+<div class="font-semibold text-slate-800">李同学</div>
+<div class="text-xs text-slate-500">软件工程导论 - ¥35</div>
+</div>
+</div>
+<a href="chat.html" class="text-blue-600 hover:text-blue-700 text-sm">查看全部消息</a>
+</div>
+<div class="flex-1 p-4 overflow-y-auto min-h-[400px]">
+<div class="text-center text-xs text-slate-400 mb-4">2026年7月21日</div>
+<div class="flex items-start gap-3 mb-4">
+<el-avatar :size="36" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<div class="bg-slate-100 rounded-lg p-3 max-w-[70%]">
+<p class="text-sm text-slate-700">你好，这本书还在吗？</p>
+<span class="text-xs text-slate-400 mt-1">10:25</span>
+</div>
+</div>
+<div class="flex items-start gap-3 mb-4 justify-end">
+<div class="bg-blue-500 rounded-lg p-3 max-w-[70%]">
+<p class="text-sm text-white">在的，你要吗？</p>
+<span class="text-xs text-blue-200 mt-1">10:26</span>
+</div>
+<el-avatar :size="36" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar>
+</div>
+<div class="flex items-start gap-3 mb-4">
+<el-avatar :size="36" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<div class="bg-slate-100 rounded-lg p-3 max-w-[70%]">
+<p class="text-sm text-slate-700">可以便宜点吗？30出不出？</p>
+<span class="text-xs text-slate-400 mt-1">10:30</span>
+</div>
+</div>
+</div>
+<div class="p-4 border-t border-slate-100">
+<div class="flex gap-2">
+<el-input placeholder="输入消息..." size="large">
+<template #append><el-button type="primary"><el-icon><promotion /></el-icon></el-button></template>
+</el-input>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class="bg-slate-800 text-slate-400 py-8 mt-12">
+<div class="page-container text-center"><p class="text-sm">校园轻集市 - 让校园生活更便捷</p></div>
+</footer>
+</div>
+<script>
+const { createApp, ref } = Vue;
+const app = createApp({
+setup() {
+const searchKeyword = ref('');
+return { searchKeyword };
+}
+});
+app.use(ElementPlus);
+app.mount('#app');
+</script>
+</body>
+</html>

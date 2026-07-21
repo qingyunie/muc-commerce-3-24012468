@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分类浏览 - 校园轻集市</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <script src="https://unpkg.com/element-plus"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/common.css">
+    <style>
+        .filter-bar {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        .info-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .info-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        .sort-btn {
+            transition: all 0.2s;
+        }
+        .sort-btn.active {
+            background: #2563EB;
+            color: white;
+        }
+        .list-view .info-card {
+            display: flex;
+            flex-direction: row;
+        }
+        .list-view .info-card img {
+            width: 200px;
+            height: 100%;
+            min-height: 160px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+    <div id="app">
+        <!-- 顶部导航 -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="home.html" class="logo">
+                    <el-icon :size="28"><shop /></el-icon>
+                    <span>校园轻集市</span>
+                </a>
+                <div class="nav-links">
+                    <a href="home.html"><el-icon :size="16"><home-filled /></el-icon> 首页</a>
+                    <a href="category.html" class="active"><el-icon :size="16"><grid /></el-icon> 集市浏览</a>
+                    <a href="publish.html"><el-icon :size="16"><circle-plus /></el-icon> 发布信息</a>
+                    <a href="messages.html"><el-icon :size="16"><chat-dot-round /></el-icon> 消息
+                        <el-badge :value="3" class="ml-1" type="danger"></el-badge>
+                    </a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="profile.html" class="flex items-center gap-2 text-white/90 hover:text-white transition">
+                        <el-avatar :size="32" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar>
+                        <span class="text-sm">张同学</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="page-container">
+            <!-- 面包屑 -->
+            <div class="breadcrumb">
+                <a href="home.html">首页</a>
+                <el-icon><arrow-right /></el-icon>
+                <span>集市浏览</span>
+            </div>
+
+            <!-- 搜索和筛选 -->
+            <div class="filter-bar">
+                <div class="flex flex-col lg:flex-row gap-4">
+                    <!-- 搜索框 -->
+                    <div class="flex-1">
+                        <el-input v-model="searchKeyword" placeholder="搜索关键词：教材、耳机、快递..." size="large" clearable>
+                            <template #prefix>
+                                <el-icon><search /></el-icon>
+                            </template>
+                            <template #append>
+                                <el-button type="primary">搜索</el-button>
+                            </template>
+                        </el-input>
+                    </div>
+                    <!-- 类型筛选 -->
+                    <div class="flex gap-2 flex-wrap">
+                        <el-select v-model="filterType" placeholder="信息类型" size="large" style="width: 140px">
+                            <el-option label="全部类型" value=""></el-option>
+                            <el-option label="二手交易" value="secondhand">
+                                <el-icon class="mr-1"><goods /></el-icon> 二手交易
+                            </el-option>
+                            <el-option label="失物招领" value="lostfound">
+                                <el-icon class="mr-1"><location /></el-icon> 失物招领
+                            </el-option>
+                            <el-option label="拼单搭子" value="group">
+                                <el-icon class="mr-1"><user /></el-icon> 拼单搭子
+                            </el-option>
+                            <el-option label="跑腿委托" value="errand">
+                                <el-icon class="mr-1"><promotion /></el-icon> 跑腿委托
+                            </el-option>
+                        </el-select>
+                        <el-select v-model="filterCampus" placeholder="校区" size="large" style="width: 120px">
+                            <el-option label="全部校区" value=""></el-option>
+                            <el-option label="北校区" value="north"></el-option>
+                            <el-option label="南校区" value="south"></el-option>
+                            <el-option label="东校区" value="east"></el-option>
+                            <el-option label="西校区" value="west"></el-option>
+                        </el-select>
+                        <el-select v-model="filterStatus" placeholder="状态" size="large" style="width: 120px">
+                            <el-option label="全部状态" value=""></el-option>
+                            <el-option label="进行中" value="active"></el-option>
+                            <el-option label="已完成" value="completed"></el-option>
+                            <el-option label="已关闭" value="closed"></el-option>
+                        </el-select>
+                    </div>
+                </div>
+
+                <!-- 排序和视图切换 -->
+                <div class="flex items-center justify-between mt-4 pt-4 border-t border-slate-100">
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-slate-500">排序：</span>
+                        <el-button :class="['sort-btn', sortBy === 'newest' ? 'active' : '']" size="small" @click="sortBy = 'newest'">
+                            <el-icon class="mr-1"><sort /></el-icon> 最新发布
+                        </el-button>
+                        <el-button :class="['sort-btn', sortBy === 'hot' ? 'active' : '']" size="small" @click="sortBy = 'hot'">
+                            <el-icon class="mr-1"><top /></el-icon> 热度最高
+                        </el-button>
+                        <el-button :class="['sort-btn', sortBy === 'price' ? 'active' : '']" size="small" @click="sortBy = 'price'">
+                            <el-icon class="mr-1"><bottom /></el-icon> 价格最低
+                        </el-button>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-slate-500">共 128 条信息</span>
+                        <el-button-group>
+                            <el-button :type="viewMode === 'grid' ? 'primary' : 'default'" size="small" @click="viewMode = 'grid'">
+                                <el-icon><grid /></el-icon>
+                            </el-button>
+                            <el-button :type="viewMode === 'list' ? 'primary' : 'default'" size="small" @click="viewMode = 'list'">
+                                <el-icon><list /></el-icon>
+                            </el-button>
+                        </el-button-group>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 信息列表 -->
+            <div :class="viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6' : 'space-y-4'">
+                <!-- 二手商品卡片 -->
+                <a href="item-detail.html" class="info-card bg-white rounded-xl overflow-hidden border border-slate-100" :class="{'flex flex-row': viewMode === 'list'}">
+                    <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=250&fit=crop" 
+                         alt="教材" class="w-full object-cover" :class="viewMode === 'list' ? 'w-48 h-48' : 'h-48'">
+                    <div class="p-4 flex-1">
+                        <div class="flex gap-2 mb-2">
+                            <span class="tag tag-primary">二手</span>
+                            <span class="tag tag-success">九成新</span>
+                        </div>
+                        <h3 class="font-semibold text-slate-800 mb-2 line-clamp-2">出闲置教材《软件工程导论》，九成新，可小刀</h3>
+                        <p class="text-sm text-slate-500 mb-3 line-clamp-2">上学期刚买的，基本没用过，现在毕业了转出。可小刀，北校区面交。</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xl font-bold text-red-500">¥35</span>
+                            <span class="text-xs text-slate-400">5分钟前</span>
+                        </div>
+                        <div class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+                            <el-avatar :size="24" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop&crop=face"></el-avatar>
+                            <span class="text-sm text-slate-600">李同学</span>
+                            <span class="text-xs text-slate-400 ml-auto">北校区 · 收藏 12</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 失物招领卡片 -->
+                <a href="lost-detail.html" class="info-card bg-white rounded-xl overflow-hidden border border-slate-100" :class="{'flex flex-row': viewMode === 'list'}">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=250&fit=crop" 
+                         alt="校园卡" class="w-full object-cover" :class="viewMode === 'list' ? 'w-48 h-48' : 'h-48'">
+                    <div class="p-4 flex-1">
+                        <div class="flex gap-2 mb-2">
+                            <span class="tag tag-danger">失物</span>
+                            <span class="tag tag-warning">紧急</span>
+                        </div>
+                        <h3 class="font-semibold text-slate-800 mb-2 line-clamp-2">拾到校园卡一张，请失主联系，东区食堂门口</h3>
+                        <p class="text-sm text-slate-500 mb-3 line-clamp-2">今天中午在东区食堂门口捡到一张校园卡，姓名模糊，卡号后四位是 8866。</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-green-600 font-medium">招领中</span>
+                            <span class="text-xs text-slate-400">20分钟前</span>
+                        </div>
+                        <div class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+                            <el-avatar :size="24" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face"></el-avatar>
+                            <span class="text-sm text-slate-600">王同学</span>
+                            <span class="text-xs text-slate-400 ml-auto">东校区 · 收藏 8</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 拼单卡片 -->
+                <a href="group-detail.html" class="info-card bg-white rounded-xl overflow-hidden border border-slate-100" :class="{'flex flex-row': viewMode === 'list'}">
+                    <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=250&fit=crop" 
+                         alt="奶茶" class="w-full object-cover" :class="viewMode === 'list' ? 'w-48 h-48' : 'h-48'">
+                    <div class="p-4 flex-1">
+                        <div class="flex gap-2 mb-2">
+                            <span class="tag tag-info">拼单</span>
+                            <span class="tag tag-success">还差2人</span>
+                        </div>
+                        <h3 class="font-semibold text-slate-800 mb-2 line-clamp-2">东区食堂三楼拼奶茶，还差 2 人，满10杯免配送费</h3>
+                        <p class="text-sm text-slate-500 mb-3 line-clamp-2">想拼喜茶，满10杯免配送费，目前3人，还差2人，截止下午5点。</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-blue-600 font-medium">3/5人</span>
+                            <span class="text-xs text-slate-400">1小时前</span>
+                        </div>
+                        <div class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+                            <el-avatar :size="24" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop&crop=face"></el-avatar>
+                            <span class="text-sm text-slate-600">陈同学</span>
+                            <span class="text-xs text-slate-400 ml-auto">东校区 · 收藏 15</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 跑腿卡片 -->
+                <a href="task-detail.html" class="info-card bg-white rounded-xl overflow-hidden border border-slate-100" :class="{'flex flex-row': viewMode === 'list'}">
+                    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&h=250&fit=crop" 
+                         alt="快递" class="w-full object-cover" :class="viewMode === 'list' ? 'w-48 h-48' : 'h-48'">
+                    <div class="p-4 flex-1">
+                        <div class="flex gap-2 mb-2">
+                            <span class="tag tag-warning">跑腿</span>
+                            <span class="tag tag-primary">酬谢5元</span>
+                        </div>
+                        <h3 class="font-semibold text-slate-800 mb-2 line-clamp-2">求帮取快递到 6 栋宿舍，酬谢 5 元，下午6点前</h3>
+                        <p class="text-sm text-slate-500 mb-3 line-clamp-2">快递在菜鸟驿站，有点重，求好心人帮忙送到6栋楼下，酬谢5元。</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xl font-bold text-amber-600">¥5</span>
+                            <span class="text-xs text-slate-400">2小时前</span>
+                        </div>
+                        <div class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+                            <el-avatar :size="24" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop&crop=face"></el-avatar>
+                            <span class="text-sm text-slate-600">赵同学</span>
+                            <span class="text-xs text-slate-400 ml-auto">南校区 · 收藏 6</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 更多卡片... -->
+                <a href="item-detail.html" class="info-card bg-white rounded-xl overflow-hidden border border-slate-100" :class="{'flex flex-row': viewMode === 'list'}">
+                    <img src="https://images.unsplash.com/photo-1593642632823-8f78536788c6?w=400&h=250&fit=crop" 
+                         alt="显示器" class="w-full object-cover" :class="viewMode === 'list' ? 'w-48 h-48' : 'h-48'">
+                    <div class="p-4 flex-1">
+                        <div class="flex gap-2 mb-2">
+                            <span class="tag tag-primary">二手</span>
+                            <span class="tag tag-success">可议价</span>
+                        </div>
+                        <h3 class="font-semibold text-slate-800 mb-2 line-clamp-2">求购二手显示器，预算 300 元以内，24寸以上</h3>
+                        <p class="text-sm text-slate-500 mb-3 line-clamp-2">想买个二手显示器用来写代码，预算300以内，要求24寸以上，IPS屏优先。</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xl font-bold text-red-500">¥300</span>
+                            <span class="text-xs text-slate-400">3小时前</span>
+                        </div>
+                        <div class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+                            <el-avatar :size="24" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face"></el-avatar>
+                            <span class="text-sm text-slate-600">刘同学</span>
+                            <span class="text-xs text-slate-400 ml-auto">西校区 · 收藏 23</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="group-detail.html" class="info-card bg-white rounded-xl overflow-hidden border border-slate-100" :class="{'flex flex-row': viewMode === 'list'}">
+                    <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400&h=250&fit=crop" 
+                         alt="拼车" class="w-full object-cover" :class="viewMode === 'list' ? 'w-48 h-48' : 'h-48'">
+                    <div class="p-4 flex-1">
+                        <div class="flex gap-2 mb-2">
+                            <span class="tag tag-info">拼车</span>
+                            <span class="tag tag-success">周五出发</span>
+                        </div>
+                        <h3 class="font-semibold text-slate-800 mb-2 line-clamp-2">周五晚上拼车去高铁站，已有2人，还差2人</h3>
+                        <p class="text-sm text-slate-500 mb-3 line-clamp-2">周五晚上7点出发去高铁站，人均25元，目前2人，还差2人，有意者联系。</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-blue-600 font-medium">2/4人</span>
+                            <span class="text-xs text-slate-400">5小时前</span>
+                        </div>
+                        <div class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+                            <el-avatar :size="24" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=50&h=50&fit=crop&crop=face"></el-avatar>
+                            <span class="text-sm text-slate-600">周同学</span>
+                            <span class="text-xs text-slate-400 ml-auto">北校区 · 收藏 18</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="lost-detail.html" class="info-card bg-white rounded-xl overflow-hidden border border-slate-100" :class="{'flex flex-row': viewMode === 'list'}">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=250&fit=crop" 
+                         alt="耳机" class="w-full object-cover" :class="viewMode === 'list' ? 'w-48 h-48' : 'h-48'">
+                    <div class="p-4 flex-1">
+                        <div class="flex gap-2 mb-2">
+                            <span class="tag tag-danger">寻物</span>
+                            <span class="tag tag-warning">黑色</span>
+                        </div>
+                        <h3 class="font-semibold text-slate-800 mb-2 line-clamp-2">西门打印店附近丢失黑色耳机盒，如有拾到请联系</h3>
+                        <p class="text-sm text-slate-500 mb-3 line-clamp-2">昨天下午在西门打印店附近丢失一个黑色耳机盒，里面有一副AirPods Pro。</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-rose-600 font-medium">寻找中</span>
+                            <span class="text-xs text-slate-400">昨天</span>
+                        </div>
+                        <div class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+                            <el-avatar :size="24" src="https://images.unsplash.com/photo-1519345182560-5f99c22ef98c?w=50&h=50&fit=crop&crop=face"></el-avatar>
+                            <span class="text-sm text-slate-600">吴同学</span>
+                            <span class="text-xs text-slate-400 ml-auto">西校区 · 收藏 12</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="task-detail.html" class="info-card bg-white rounded-xl overflow-hidden border border-slate-100" :class="{'flex flex-row': viewMode === 'list'}">
+                    <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=400&h=250&fit=crop" 
+                         alt="打印" class="w-full object-cover" :class="viewMode === 'list' ? 'w-48 h-48' : 'h-48'">
+                    <div class="p-4 flex-1">
+                        <div class="flex gap-2 mb-2">
+                            <span class="tag tag-warning">跑腿</span>
+                            <span class="tag tag-primary">酬谢3元</span>
+                        </div>
+                        <h3 class="font-semibold text-slate-800 mb-2 line-clamp-2">求帮忙打印资料并送到图书馆，酬谢 3 元</h3>
+                        <p class="text-sm text-slate-500 mb-3 line-clamp-2">需要打印一份30页的资料，双面打印，送到图书馆3楼自习室，酬谢3元。</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xl font-bold text-amber-600">¥3</span>
+                            <span class="text-xs text-slate-400">昨天</span>
+                        </div>
+                        <div class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+                            <el-avatar :size="24" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=50&h=50&fit=crop&crop=face"></el-avatar>
+                            <span class="text-sm text-slate-600">孙同学</span>
+                            <span class="text-xs text-slate-400 ml-auto">南校区 · 收藏 9</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 分页 -->
+            <div class="flex justify-center mt-8">
+                <el-pagination background layout="prev, pager, next, jumper" :total="128" :page-size="8"></el-pagination>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <footer class="bg-slate-800 text-slate-400 py-8 mt-12">
+            <div class="page-container text-center">
+                <p class="text-sm">校园轻集市 - 让校园生活更便捷</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue
+        const app = createApp({
+            setup() {
+                const searchKeyword = ref('')
+                const filterType = ref('')
+                const filterCampus = ref('')
+                const filterStatus = ref('')
+                const sortBy = ref('newest')
+                const viewMode = ref('grid')
+
+                return {
+                    searchKeyword,
+                    filterType,
+                    filterCampus,
+                    filterStatus,
+                    sortBy,
+                    viewMode
+                }
+            }
+        })
+        app.use(ElementPlus)
+        app.mount('#app')
+    </script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>跑腿委托详情 - 校园轻集市</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<script src="https://unpkg.com/element-plus"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.reward-badge { background: linear-gradient(135deg, #FEF3C7, #FDE68A); color: #92400E; padding: 8px 16px; border-radius: 12px; font-weight: 700; font-size: 18px; display: inline-flex; align-items: center; gap: 4px; }
+.task-status { display: inline-flex; align-items: center; padding: 6px 16px; border-radius: 20px; font-weight: 600; font-size: 14px; }
+.status-pending { background: #DBEAFE; color: #2563EB; }
+.status-progress { background: #FEF3C7; color: #92400E; }
+.status-done { background: #D1FAE5; color: #059669; }
+.info-row { display: flex; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
+.info-row:last-child { border-bottom: none; }
+.info-label { width: 100px; color: #64748b; font-size: 14px; flex-shrink: 0; }
+.info-value { flex: 1; color: #1e293b; font-size: 14px; font-weight: 500; }
+.accept-btn { background: linear-gradient(135deg, #10B981, #059669); transition: all 0.3s; }
+.accept-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3); }
+</style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+<div id="app">
+<nav class="navbar">
+<div class="nav-container">
+<a href="home.html" class="logo"><el-icon :size="28"><shop /></el-icon><span>校园轻集市</span></a>
+<div class="nav-links">
+<a href="home.html"><el-icon :size="16"><home-filled /></el-icon> 首页</a>
+<a href="category.html"><el-icon :size="16"><grid /></el-icon> 集市浏览</a>
+<a href="publish.html"><el-icon :size="16"><circle-plus /></el-icon> 发布信息</a>
+<a href="messages.html"><el-icon :size="16"><chat-dot-round /></el-icon> 消息</a>
+</div>
+<div class="flex items-center gap-4">
+<a href="profile.html" class="flex items-center gap-2 text-white/90 hover:text-white transition">
+<el-avatar :size="32" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<span class="text-sm">张同学</span>
+</a>
+</div>
+</div>
+</nav>
+<div class="page-container">
+<div class="breadcrumb">
+<a href="home.html">首页</a>
+<el-icon><arrow-right /></el-icon>
+<a href="category.html">集市浏览</a>
+<el-icon><arrow-right /></el-icon>
+<a href="category.html?type=errand">跑腿委托</a>
+<el-icon><arrow-right /></el-icon>
+<span>详情</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2">
+<div class="bg-white rounded-xl p-6 border border-slate-100 shadow-sm mb-6">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<span class="tag tag-warning">跑腿委托</span>
+<span class="task-status status-pending"><el-icon class="mr-1"><clock /></el-icon> 待接单</span>
+</div>
+<span class="text-sm text-slate-400">编号：RW20260721008</span>
+</div>
+<h1 class="text-2xl font-bold text-slate-800 mb-4">求帮取快递到 6 栋宿舍，酬谢 5 元</h1>
+<div class="reward-badge mb-6">
+<el-icon><money /></el-icon>
+<span>酬谢 ¥5</span>
+</div>
+<div class="info-row"><span class="info-label">任务内容</span><span class="info-value">帮忙从菜鸟驿站取快递，送到6栋宿舍楼下</span></div>
+<div class="info-row"><span class="info-label">送达地点</span><span class="info-value flex items-center gap-1"><el-icon class="text-blue-600"><location /></el-icon> 南校区6栋宿舍楼下</span></div>
+<div class="info-row"><span class="info-label">期望时间</span><span class="info-value">今日 18:00 前</span></div>
+<div class="info-row"><span class="info-label">所在校区</span><span class="info-value">南校区</span></div>
+<div class="info-row"><span class="info-label">发布时间</span><span class="info-value">2小时前</span></div>
+<div class="info-row"><span class="info-label">浏览次数</span><span class="info-value">45 次</span></div>
+<div class="mt-6 pt-4 border-t border-slate-100">
+<h3 class="font-bold text-slate-800 mb-3">任务描述</h3>
+<div class="text-slate-600 leading-relaxed space-y-2">
+<p>快递在菜鸟驿站，有点重（大概5kg左右），是几本书和日用品。</p>
+<p>求好心人帮忙送到6栋宿舍楼下，酬谢5元。如果方便的话也可以送到宿舍门口，再加2元。</p>
+<p>取件码我已经发在详情里了，接单后我会通过消息发给你。</p>
+<p>最好是有小推车或者电动车的同学，东西确实有点重，谢谢！</p>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-slate-100">
+<h3 class="font-bold text-slate-800 mb-3">任务要求</h3>
+<div class="flex flex-wrap gap-2">
+<el-tag type="info" effect="plain">今日18:00前送达</el-tag>
+<el-tag type="info" effect="plain">送到宿舍楼下</el-tag>
+<el-tag type="info" effect="plain">物品较重需小心</el-tag>
+<el-tag type="info" effect="plain">凭取件码取件</el-tag>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-xl p-6 border border-slate-100 shadow-sm mb-6">
+<h3 class="font-bold text-slate-800 mb-4">任务进度</h3>
+<el-steps :active="1" finish-status="success">
+<el-step title="发布任务" description="赵同学发布"></el-step>
+<el-step title="等待接单" description="进行中"></el-step>
+<el-step title="任务完成" description="待完成"></el-step>
+<el-step title="确认收款" description="待确认"></el-step>
+</el-steps>
+</div>
+</div>
+<div class="lg:col-span-1">
+<div class="bg-white rounded-xl p-6 border border-slate-100 shadow-sm mb-6">
+<div class="flex items-center gap-4 mb-4">
+<el-avatar :size="56" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<div>
+<h3 class="font-bold text-slate-800">赵同学</h3>
+<p class="text-sm text-slate-500">外国语学院 · 南校区</p>
+</div>
+</div>
+<div class="flex items-center gap-2 mb-4 p-3 bg-amber-50 rounded-lg">
+<el-icon class="text-amber-600"><medal /></el-icon>
+<span class="text-sm text-amber-700">信用分：88分</span>
+</div>
+<div class="grid grid-cols-3 gap-2 text-center mb-4">
+<div class="bg-slate-50 rounded-lg p-2"><div class="font-bold text-slate-800">5</div><div class="text-xs text-slate-400">发布</div></div>
+<div class="bg-slate-50 rounded-lg p-2"><div class="font-bold text-slate-800">3</div><div class="text-xs text-slate-400">完成</div></div>
+<div class="bg-slate-50 rounded-lg p-2"><div class="font-bold text-green-600">100%</div><div class="text-xs text-slate-400">好评</div></div>
+</div>
+<div class="space-y-2">
+<el-button type="success" size="large" class="w-full accept-btn" @click="showAccept = true"><el-icon class="mr-1"><check /></el-icon> 立即接单</el-button>
+<el-button type="primary" size="large" class="w-full"><el-icon class="mr-1"><chat-dot-round /></el-icon> 联系发布者</el-button>
+<el-button :type="isFavorited ? 'danger' : 'default'" size="large" class="w-full" @click="isFavorited = !isFavorited">
+<el-icon class="mr-1"><star-filled v-if="isFavorited" /><star v-else /></el-icon>{{ isFavorited ? '已收藏' : '收藏任务' }}
+</el-button>
+</div>
+</div>
+<div class="bg-indigo-50 rounded-xl p-4 border border-indigo-200 mb-6">
+<div class="flex items-center gap-2 mb-2"><el-icon class="text-indigo-600"><info-filled /></el-icon><span class="font-semibold text-indigo-800">接单须知</span></div>
+<ul class="text-sm text-indigo-700 space-y-1">
+<li>· 确认能按时完成任务</li>
+<li>· 保持与发布者沟通</li>
+<li>· 送达后及时确认</li>
+<li>· 酬劳由发布者支付</li>
+</ul>
+</div>
+<div class="bg-amber-50 rounded-xl p-4 border border-amber-200 mb-6">
+<div class="flex items-center gap-2 mb-2"><el-icon class="text-amber-600"><warning /></el-icon><span class="font-semibold text-amber-800">安全提醒</span></div>
+<ul class="text-sm text-amber-700 space-y-1">
+<li>· 不要提前支付任何费用</li>
+<li>· 确认任务完成后再收款</li>
+<li>· 保留任务沟通记录</li>
+<li>· 遇到问题及时举报</li>
+</ul>
+</div>
+<div class="bg-white rounded-xl p-6 border border-slate-100 shadow-sm">
+<h3 class="font-bold text-slate-800 mb-4">相关跑腿任务</h3>
+<div class="space-y-4">
+<a href="task-detail.html" class="flex gap-3 p-3 rounded-lg hover:bg-slate-50 transition">
+<img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=100&h=100&fit=crop" class="w-16 h-16 object-cover rounded-lg">
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-medium text-slate-800 truncate">帮忙打印资料送到图书馆</h4>
+<p class="text-sm font-bold text-amber-600 mt-1">¥3</p>
+<p class="text-xs text-slate-400">南校区 · 待接单</p>
+</div>
+</a>
+<a href="task-detail.html" class="flex gap-3 p-3 rounded-lg hover:bg-slate-50 transition">
+<img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=100&h=100&fit=crop" class="w-16 h-16 object-cover rounded-lg">
+<div class="flex-1 min-w-0">
+<h4 class="text-sm font-medium text-slate-800 truncate">代买水果送到宿舍</h4>
+<p class="text-sm font-bold text-amber-600 mt-1">¥4</p>
+<p class="text-xs text-slate-400">北校区 · 待接单</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<el-dialog v-model="showAccept" title="确认接单" width="500px">
+<el-alert title="接单确认" type="info" :closable="false" class="mb-4">
+<div class="text-sm mt-2">接单后请尽快联系发布者确认任务细节。</div>
+</el-alert>
+<div class="bg-slate-50 rounded-lg p-4 mb-4">
+<div class="flex items-center gap-3 mb-2">
+<el-avatar :size="40" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<div><div class="font-semibold">赵同学</div><div class="text-xs text-slate-500">外国语学院</div></div>
+</div>
+<div class="text-sm text-slate-600 mt-2">
+<p>任务：求帮取快递到6栋宿舍</p>
+<p>酬谢：¥5</p>
+<p>期望时间：今日18:00前</p>
+</div>
+</div>
+<el-form label-position="top">
+<el-form-item label="备注（可选）">
+<el-input type="textarea" :rows="3" placeholder="例如：我有电动车，可以送到宿舍门口..."></el-input>
+</el-form-item>
+<el-form-item>
+<el-checkbox>我确认能按时完成任务</el-checkbox>
+</el-form-item>
+</el-form>
+<template #footer>
+<el-button @click="showAccept = false">取消</el-button>
+<el-button type="success" @click="showAccept = false"><el-icon class="mr-1"><check /></el-icon> 确认接单</el-button>
+</template>
+</el-dialog>
+<footer class="bg-slate-800 text-slate-400 py-8 mt-12">
+<div class="page-container text-center"><p class="text-sm">校园轻集市 - 让校园生活更便捷</p></div>
+</footer>
+</div>
+<script>
+const { createApp, ref } = Vue;
+const app = createApp({
+setup() {
+const isFavorited = ref(false);
+const showAccept = ref(false);
+return { isFavorited, showAccept };
+}
+});
+app.use(ElementPlus);
+app.mount('#app');
+</script>
+</body>
+</html>

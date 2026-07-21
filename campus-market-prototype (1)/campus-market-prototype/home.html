@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>首页 - 校园轻集市</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<script src="https://unpkg.com/element-plus"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.hero-section { background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 50%, #1E40AF 100%); position: relative; overflow: hidden; }
+.hero-section::before { content: ''; position: absolute; top: -50%; right: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); border-radius: 50%; }
+.category-card { transition: all 0.3s ease; cursor: pointer; }
+.category-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(37, 99, 235, 0.2); }
+.info-card { transition: all 0.3s ease; cursor: pointer; }
+.info-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+.stat-card { background: linear-gradient(135deg, #fff 0%, #f8fafc 100%); }
+.hot-tag { animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+</style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+<div id="app">
+<nav class="navbar">
+<div class="nav-container">
+<a href="home.html" class="logo"><el-icon :size="28"><shop /></el-icon><span>校园轻集市</span></a>
+<div class="nav-links">
+<a href="home.html" class="active"><el-icon :size="16"><home-filled /></el-icon> 首页</a>
+<a href="category.html"><el-icon :size="16"><grid /></el-icon> 集市浏览</a>
+<a href="publish.html"><el-icon :size="16"><circle-plus /></el-icon> 发布信息</a>
+<a href="messages.html"><el-icon :size="16"><chat-dot-round /></el-icon> 消息<el-badge :value="3" class="ml-1" type="danger"></el-badge></a>
+</div>
+<div class="flex items-center gap-4">
+<a href="profile.html" class="flex items-center gap-2 text-white/90 hover:text-white transition">
+<el-avatar :size="32" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<span class="text-sm">张同学</span>
+</a>
+</div>
+</div>
+</nav>
+<div class="hero-section text-white py-16">
+<div class="max-w-7xl mx-auto px-8 relative z-10">
+<div class="flex items-center justify-between">
+<div class="flex-1">
+<h1 class="text-4xl font-bold mb-4">今日集市，发现校园好物</h1>
+<p class="text-lg text-blue-100 mb-6">二手交易 · 失物招领 · 拼单搭子 · 跑腿委托</p>
+<div class="flex gap-3">
+<a href="category.html" class="bg-white text-blue-600 px-6 py-3 rounded-xl font-semibold hover:bg-blue-50 transition shadow-lg">浏览集市</a>
+<a href="publish.html" class="bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-800 transition border border-blue-500">发布信息</a>
+</div>
+</div>
+<div class="hidden lg:block">
+<img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=500&h=350&fit=crop" alt="校园生活" class="rounded-2xl shadow-2xl opacity-90" style="max-width: 400px;">
+</div>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-8 -mt-8 relative z-20">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<a href="category.html?type=secondhand" class="category-card bg-white rounded-xl p-6 shadow-md border border-slate-100">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 bg-amber-100 rounded-xl flex items-center justify-center"><el-icon :size="28" class="text-amber-600"><goods /></el-icon></div>
+<div><h3 class="font-bold text-slate-800">二手交易</h3><p class="text-sm text-slate-500">闲置流转，物尽其用</p></div>
+</div>
+</a>
+<a href="category.html?type=lostfound" class="category-card bg-white rounded-xl p-6 shadow-md border border-slate-100">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 bg-rose-100 rounded-xl flex items-center justify-center"><el-icon :size="28" class="text-rose-600"><location /></el-icon></div>
+<div><h3 class="font-bold text-slate-800">失物招领</h3><p class="text-sm text-slate-500">互助寻物，温暖校园</p></div>
+</div>
+</a>
+<a href="category.html?type=group" class="category-card bg-white rounded-xl p-6 shadow-md border border-slate-100">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 bg-teal-100 rounded-xl flex items-center justify-center"><el-icon :size="28" class="text-teal-600"><user /></el-icon></div>
+<div><h3 class="font-bold text-slate-800">拼单搭子</h3><p class="text-sm text-slate-500">一起拼单，更省更乐</p></div>
+</div>
+</a>
+<a href="category.html?type=errand" class="category-card bg-white rounded-xl p-6 shadow-md border border-slate-100">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center"><el-icon :size="28" class="text-indigo-600"><promotion /></el-icon></div>
+<div><h3 class="font-bold text-slate-800">跑腿委托</h3><p class="text-sm text-slate-500">互帮互助，便捷校园</p></div>
+</div>
+</a>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-8 py-8">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="stat-card rounded-xl p-5 border border-slate-100 shadow-sm"><div class="text-2xl font-bold text-blue-600">1,286</div><div class="text-sm text-slate-500 mt-1">今日新增信息</div></div>
+<div class="stat-card rounded-xl p-5 border border-slate-100 shadow-sm"><div class="text-2xl font-bold text-green-600">8,432</div><div class="text-sm text-slate-500 mt-1">累计成交</div></div>
+<div class="stat-card rounded-xl p-5 border border-slate-100 shadow-sm"><div class="text-2xl font-bold text-amber-600">3,567</div><div class="text-sm text-slate-500 mt-1">活跃用户</div></div>
+<div class="stat-card rounded-xl p-5 border border-slate-100 shadow-sm"><div class="text-2xl font-bold text-rose-600">96.5%</div><div class="text-sm text-slate-500 mt-1">好评率</div></div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-8 py-8">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2"><el-icon :size="24" class="text-blue-600"><clock /></el-icon>最新发布</h2>
+<a href="category.html" class="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-1">查看更多 <el-icon><arrow-right /></el-icon></a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<a href="item-detail.html" class="info-card bg-white rounded-xl overflow-hidden border border-slate-100">
+<img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=250&fit=crop" alt="教材" class="w-full h-48 object-cover">
+<div class="p-4">
+<div class="flex gap-2 mb-2"><span class="tag tag-primary">二手</span><span class="tag tag-success">九成新</span></div>
+<h3 class="font-semibold text-slate-800 mb-2 line-clamp-2">出闲置教材《软件工程导论》，九成新，可小刀</h3>
+<div class="flex items-center justify-between"><span class="text-xl font-bold text-red-500">¥35</span><span class="text-xs text-slate-400">5分钟前</span></div>
+<div class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+<el-avatar :size="24" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50&h=50&fit=crop&crop=face"></el-avatar>
+<span class="text-sm text-slate-600">李同学</span><span class="text-xs text-slate-400 ml-auto">北校区</span>
+</div>
+</div>
+</a>
+<a href="lost-detail.html" class="info-card bg-white rounded-xl overflow-hidden border border-slate-100">
+<img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=250&fit=crop" alt="校园卡" class="w-full h-48 object-cover">
+<div class="p-4">
+<div class="flex gap-2 mb-2"><span class="tag tag-danger">失物</span><span class="tag tag-warning">紧急</span></div>
+<h3 class="font-semibold text-slate-800 mb-2 line-clamp-2">拾到校园卡一张，请失主联系，东区食堂门口</h3>
+<div class="flex items-center justify-between"><span class="text-sm text-green-600 font-medium">招领中</span><span class="text-xs text-slate-400">20分钟前</span></div>
+<div class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+<el-avatar :size="24" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face"></el-avatar>
+<span class="text-sm text-slate-600">王同学</span><span class="text-xs text-slate-400 ml-auto">东校区</span>
+</div>
+</div>
+</a>
+<a href="group-detail.html" class="info-card bg-white rounded-xl overflow-hidden border border-slate-100">
+<img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=250&fit=crop" alt="奶茶" class="w-full h-48 object-cover">
+<div class="p-4">
+<div class="flex gap-2 mb-2"><span class="tag tag-info">拼单</span><span class="tag tag-success">还差2人</span></div>
+<h3 class="font-semibold text-slate-800 mb-2 line-clamp-2">东区食堂三楼拼奶茶，还差 2 人，满10杯免配送费</h3>
+<div class="flex items-center justify-between"><span class="text-sm text-blue-600 font-medium">3/5人</span><span class="text-xs text-slate-400">1小时前</span></div>
+<div class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+<el-avatar :size="24" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop&crop=face"></el-avatar>
+<span class="text-sm text-slate-600">陈同学</span><span class="text-xs text-slate-400 ml-auto">东校区</span>
+</div>
+</div>
+</a>
+<a href="task-detail.html" class="info-card bg-white rounded-xl overflow-hidden border border-slate-100">
+<img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&h=250&fit=crop" alt="快递" class="w-full h-48 object-cover">
+<div class="p-4">
+<div class="flex gap-2 mb-2"><span class="tag tag-warning">跑腿</span><span class="tag tag-primary">酬谢5元</span></div>
+<h3 class="font-semibold text-slate-800 mb-2 line-clamp-2">求帮取快递到 6 栋宿舍，酬谢 5 元，下午6点前</h3>
+<div class="flex items-center justify-between"><span class="text-xl font-bold text-amber-600">¥5</span><span class="text-xs text-slate-400">2小时前</span></div>
+<div class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+<el-avatar :size="24" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop&crop=face"></el-avatar>
+<span class="text-sm text-slate-600">赵同学</span><span class="text-xs text-slate-400 ml-auto">南校区</span>
+</div>
+</div>
+</a>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-8 py-8">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2"><el-icon :size="24" class="text-red-500"><star-filled /></el-icon>热门推荐</h2>
+<a href="category.html?sort=hot" class="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-1">查看更多 <el-icon><arrow-right /></el-icon></a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<a href="item-detail.html" class="info-card bg-white rounded-xl overflow-hidden border border-slate-100">
+<div class="relative">
+<img src="https://images.unsplash.com/photo-1593642632823-8f78536788c6?w=400&h=250&fit=crop" alt="显示器" class="w-full h-48 object-cover">
+<span class="hot-tag absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-1 rounded-md">热门</span>
+</div>
+<div class="p-4">
+<div class="flex gap-2 mb-2"><span class="tag tag-primary">二手</span><span class="tag tag-success">可议价</span></div>
+<h3 class="font-semibold text-slate-800 mb-2 line-clamp-2">求购二手显示器，预算 300 元以内，24寸以上</h3>
+<div class="flex items-center justify-between"><span class="text-xl font-bold text-red-500">¥300</span><span class="text-xs text-slate-400">收藏 23</span></div>
+<div class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+<el-avatar :size="24" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face"></el-avatar>
+<span class="text-sm text-slate-600">刘同学</span><span class="text-xs text-slate-400 ml-auto">西校区 · 收藏 23</span>
+</div>
+</div>
+</a>
+<a href="group-detail.html" class="info-card bg-white rounded-xl overflow-hidden border border-slate-100">
+<div class="relative">
+<img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400&h=250&fit=crop" alt="拼车" class="w-full h-48 object-cover">
+<span class="hot-tag absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-1 rounded-md">热门</span>
+</div>
+<div class="p-4">
+<div class="flex gap-2 mb-2"><span class="tag tag-info">拼车</span><span class="tag tag-success">周五出发</span></div>
+<h3 class="font-semibold text-slate-800 mb-2 line-clamp-2">周五晚上拼车去高铁站，已有2人，还差2人</h3>
+<div class="flex items-center justify-between"><span class="text-sm text-blue-600 font-medium">2/4人</span><span class="text-xs text-slate-400">收藏 18</span></div>
+<div class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+<el-avatar :size="24" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=50&h=50&fit=crop&crop=face"></el-avatar>
+<span class="text-sm text-slate-600">周同学</span><span class="text-xs text-slate-400 ml-auto">北校区 · 收藏 18</span>
+</div>
+</div>
+</a>
+<a href="item-detail.html" class="info-card bg-white rounded-xl overflow-hidden border border-slate-100">
+<img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=250&fit=crop" alt="耳机" class="w-full h-48 object-cover">
+<div class="p-4">
+<div class="flex gap-2 mb-2"><span class="tag tag-primary">二手</span><span class="tag tag-warning">八成新</span></div>
+<h3 class="font-semibold text-slate-800 mb-2 line-clamp-2">索尼 WH-1000XM4 降噪耳机，八成新，配件齐全</h3>
+<div class="flex items-center justify-between"><span class="text-xl font-bold text-red-500">¥1,200</span><span class="text-xs text-slate-400">收藏 45</span></div>
+<div class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+<el-avatar :size="24" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=50&h=50&fit=crop&crop=face"></el-avatar>
+<span class="text-sm text-slate-600">孙同学</span><span class="text-xs text-slate-400 ml-auto">南校区 · 收藏 45</span>
+</div>
+</div>
+</a>
+<a href="task-detail.html" class="info-card bg-white rounded-xl overflow-hidden border border-slate-100">
+<img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=400&h=250&fit=crop" alt="打印" class="w-full h-48 object-cover">
+<div class="p-4">
+<div class="flex gap-2 mb-2"><span class="tag tag-warning">跑腿</span><span class="tag tag-primary">酬谢3元</span></div>
+<h3 class="font-semibold text-slate-800 mb-2 line-clamp-2">西门打印店附近丢失黑色耳机盒，如有拾到请联系</h3>
+<div class="flex items-center justify-between"><span class="text-xl font-bold text-amber-600">¥3</span><span class="text-xs text-slate-400">收藏 12</span></div>
+<div class="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+<el-avatar :size="24" src="https://images.unsplash.com/photo-1519345182560-5f99c22ef98c?w=50&h=50&fit=crop&crop=face"></el-avatar>
+<span class="text-sm text-slate-600">吴同学</span><span class="text-xs text-slate-400 ml-auto">西校区 · 收藏 12</span>
+</div>
+</div>
+</a>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-8 py-8">
+<div class="bg-white rounded-xl p-6 border border-slate-100 shadow-sm">
+<h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2"><el-icon :size="20" class="text-blue-600"><bell /></el-icon>我的动态</h2>
+<div class="space-y-4">
+<div class="flex items-start gap-4 p-4 bg-slate-50 rounded-lg">
+<div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0"><el-icon class="text-blue-600"><chat-dot-round /></el-icon></div>
+<div class="flex-1"><p class="text-sm text-slate-700">李同学回复了你的消息：<span class="text-slate-500">"可以便宜点吗？30出不出？"</span></p><p class="text-xs text-slate-400 mt-1">10分钟前</p></div>
+</div>
+<div class="flex items-start gap-4 p-4 bg-slate-50 rounded-lg">
+<div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0"><el-icon class="text-green-600"><circle-check /></el-icon></div>
+<div class="flex-1"><p class="text-sm text-slate-700">你发布的「东区食堂三楼拼奶茶」已有 2 人加入</p><p class="text-xs text-slate-400 mt-1">1小时前</p></div>
+</div>
+<div class="flex items-start gap-4 p-4 bg-slate-50 rounded-lg">
+<div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0"><el-icon class="text-amber-600"><star /></el-icon></div>
+<div class="flex-1"><p class="text-sm text-slate-700">你的二手商品「软件工程导论」被 3 人收藏</p><p class="text-xs text-slate-400 mt-1">3小时前</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-8 py-8">
+<div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-6 border border-amber-200">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0"><el-icon :size="24" class="text-amber-600"><warning /></el-icon></div>
+<div class="flex-1">
+<h3 class="font-bold text-amber-800 mb-2">校园交易安全提醒</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-amber-700">
+<div class="flex items-center gap-2"><el-icon><check /></el-icon><span>尽量选择公共地点交易，如食堂、图书馆</span></div>
+<div class="flex items-center gap-2"><el-icon><check /></el-icon><span>贵重物品当面验真，确认无误再付款</span></div>
+<div class="flex items-center gap-2"><el-icon><check /></el-icon><span>保护个人隐私，不轻易透露住址和电话</span></div>
+<div class="flex items-center gap-2"><el-icon><check /></el-icon><span>警惕异常低价和异常交易要求</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class="bg-slate-800 text-slate-400 py-8 mt-12">
+<div class="max-w-7xl mx-auto px-8 text-center">
+<p class="text-sm">校园轻集市 - 让校园生活更便捷</p>
+<p class="text-xs mt-2"> 2026 校园轻集市 保留所有权利</p>
+</div>
+</footer>
+</div>
+<script>const { createApp } = Vue; const app = createApp({}); app.use(ElementPlus); app.mount('#app');</script>
+</body>
+</html>

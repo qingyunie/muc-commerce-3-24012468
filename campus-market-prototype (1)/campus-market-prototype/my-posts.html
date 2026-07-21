@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的发布 - 校园轻集市</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<script src="https://unpkg.com/element-plus"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.post-card { transition: all 0.3s; }
+.post-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.status-active { background: #10B981; }
+.status-completed { background: #2563EB; }
+.status-closed { background: #94A3B8; }
+</style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+<div id="app">
+<nav class="navbar">
+<div class="nav-container">
+<a href="home.html" class="logo"><el-icon :size="28"><shop /></el-icon><span>校园轻集市</span></a>
+<div class="nav-links">
+<a href="home.html"><el-icon :size="16"><home-filled /></el-icon> 首页</a>
+<a href="category.html"><el-icon :size="16"><grid /></el-icon> 集市浏览</a>
+<a href="publish.html"><el-icon :size="16"><circle-plus /></el-icon> 发布信息</a>
+<a href="messages.html"><el-icon :size="16"><chat-dot-round /></el-icon> 消息</a>
+</div>
+<div class="flex items-center gap-4">
+<a href="profile.html" class="flex items-center gap-2 text-white/90 hover:text-white transition">
+<el-avatar :size="32" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<span class="text-sm">张同学</span>
+</a>
+</div>
+</div>
+</nav>
+<div class="page-container">
+<div class="breadcrumb">
+<a href="home.html">首页</a>
+<el-icon><arrow-right /></el-icon>
+<a href="profile.html">个人中心</a>
+<el-icon><arrow-right /></el-icon>
+<span>我的发布</span>
+</div>
+<div class="flex items-center justify-between mb-6">
+<h1 class="text-2xl font-bold text-slate-800">我的发布</h1>
+<a href="publish.html" class="btn-primary">
+<el-icon class="mr-1"><circle-plus /></el-icon> 发布新信息
+</a>
+</div>
+<div class="flex gap-2 mb-6">
+<el-button :type="filterStatus === '' ? 'primary' : 'default'" size="small" @click="filterStatus = ''">全部</el-button>
+<el-button :type="filterStatus === 'active' ? 'primary' : 'default'" size="small" @click="filterStatus = 'active'">进行中</el-button>
+<el-button :type="filterStatus === 'completed' ? 'primary' : 'default'" size="small" @click="filterStatus = 'completed'">已完成</el-button>
+<el-button :type="filterStatus === 'closed' ? 'primary' : 'default'" size="small" @click="filterStatus = 'closed'">已关闭</el-button>
+</div>
+<div class="space-y-4">
+<div class="post-card bg-white rounded-xl p-5 border border-slate-100 flex items-center gap-4">
+<img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=150&h=150&fit=crop" class="w-24 h-24 object-cover rounded-lg flex-shrink-0">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-2">
+<span class="tag tag-primary text-xs">二手</span>
+<span class="flex items-center gap-1 text-xs text-green-600"><span class="status-dot status-active"></span> 出售中</span>
+</div>
+<h3 class="font-semibold text-slate-800 mb-1">出闲置教材《软件工程导论》，九成新</h3>
+<p class="text-sm text-slate-500 mb-2">北校区 · 图书馆门口 · 5分钟前</p>
+<div class="flex items-center gap-4 text-sm text-slate-400">
+<span>浏览 128</span><span>收藏 12</span><span>消息 3</span>
+</div>
+</div>
+<div class="text-right flex-shrink-0">
+<div class="text-xl font-bold text-red-500 mb-3">¥35</div>
+<div class="space-y-2">
+<el-button type="primary" size="small">编辑</el-button>
+<el-button size="small" @click="showStatusDialog = true">更新状态</el-button>
+<el-button type="danger" text size="small">删除</el-button>
+</div>
+</div>
+</div>
+<div class="post-card bg-white rounded-xl p-5 border border-slate-100 flex items-center gap-4">
+<img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=150&h=150&fit=crop" class="w-24 h-24 object-cover rounded-lg flex-shrink-0">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-2">
+<span class="tag tag-info text-xs">拼单</span>
+<span class="flex items-center gap-1 text-xs text-green-600"><span class="status-dot status-active"></span> 进行中</span>
+</div>
+<h3 class="font-semibold text-slate-800 mb-1">东区食堂三楼拼奶茶，还差2人</h3>
+<p class="text-sm text-slate-500 mb-2">东校区 · 1小时前</p>
+<div class="flex items-center gap-4 text-sm text-slate-400">
+<span>3/5人</span><span>收藏 15</span>
+</div>
+</div>
+<div class="text-right flex-shrink-0">
+<div class="text-sm text-blue-600 mb-3">3/5人</div>
+<div class="space-y-2">
+<el-button type="primary" size="small">编辑</el-button>
+<el-button size="small">更新状态</el-button>
+<el-button type="danger" text size="small">删除</el-button>
+</div>
+</div>
+</div>
+<div class="post-card bg-white rounded-xl p-5 border border-slate-100 flex items-center gap-4">
+<img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=150&h=150&fit=crop" class="w-24 h-24 object-cover rounded-lg flex-shrink-0">
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-2">
+<span class="tag tag-warning text-xs">跑腿</span>
+<span class="flex items-center gap-1 text-xs text-blue-600"><span class="status-dot status-completed"></span> 已完成</span>
+</div>
+<h3 class="font-semibold text-slate-800 mb-1">求帮取快递到6栋宿舍</h3>
+<p class="text-sm text-slate-500 mb-2">南校区 · 昨天</p>
+<div class="flex items-center gap-4 text-sm text-slate-400">
+<span>浏览 45</span><span>已完成</span>
+</div>
+</div>
+<div class="text-right flex-shrink-0">
+<div class="text-xl font-bold text-amber-600 mb-3">¥5</div>
+<div class="space-y-2">
+<el-button size="small" disabled>已完成</el-button>
+<el-button type="danger" text size="small">删除</el-button>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-center mt-8">
+<el-pagination background layout="prev, pager, next" :total="12" :page-size="5"></el-pagination>
+</div>
+</div>
+<el-dialog v-model="showStatusDialog" title="更新状态" width="400px">
+<el-form label-position="top">
+<el-form-item label="选择新状态">
+<el-radio-group v-model="newStatus">
+<el-radio label="active">进行中</el-radio>
+<el-radio label="completed">已完成</el-radio>
+<el-radio label="closed">已关闭</el-radio>
+</el-radio-group>
+</el-form-item>
+</el-form>
+<template #footer>
+<el-button @click="showStatusDialog = false">取消</el-button>
+<el-button type="primary" @click="showStatusDialog = false">确认更新</el-button>
+</template>
+</el-dialog>
+<footer class="bg-slate-800 text-slate-400 py-8 mt-12">
+<div class="page-container text-center"><p class="text-sm">校园轻集市 - 让校园生活更便捷</p></div>
+</footer>
+</div>
+<script>
+const { createApp, ref } = Vue;
+const app = createApp({
+setup() {
+const filterStatus = ref('');
+const showStatusDialog = ref(false);
+const newStatus = ref('active');
+return { filterStatus, showStatusDialog, newStatus };
+}
+});
+app.use(ElementPlus);
+app.mount('#app');
+</script>
+</body>
+</html>

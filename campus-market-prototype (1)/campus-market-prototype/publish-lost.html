@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>发布失物招领 - 校园轻集市</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<script src="https://unpkg.com/element-plus"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.form-section { background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #e2e8f0; }
+.upload-area { border: 2px dashed #cbd5e1; border-radius: 12px; padding: 40px; text-align: center; cursor: pointer; transition: all 0.3s; }
+.upload-area:hover { border-color: #EF4444; background: #fef2f2; }
+.type-selector { display: flex; gap: 12px; margin-bottom: 20px; }
+.type-option { flex: 1; padding: 16px; border: 2px solid #e2e8f0; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s; }
+.type-option:hover, .type-option.active { border-color: #EF4444; background: #fef2f2; }
+</style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+<div id="app">
+<nav class="navbar">
+<div class="nav-container">
+<a href="home.html" class="logo"><el-icon :size="28"><shop /></el-icon><span>校园轻集市</span></a>
+<div class="nav-links">
+<a href="home.html"><el-icon :size="16"><home-filled /></el-icon> 首页</a>
+<a href="category.html"><el-icon :size="16"><grid /></el-icon> 集市浏览</a>
+<a href="publish.html" class="active"><el-icon :size="16"><circle-plus /></el-icon> 发布信息</a>
+<a href="messages.html"><el-icon :size="16"><chat-dot-round /></el-icon> 消息</a>
+</div>
+<div class="flex items-center gap-4">
+<a href="profile.html" class="flex items-center gap-2 text-white/90 hover:text-white transition">
+<el-avatar :size="32" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<span class="text-sm">张同学</span>
+</a>
+</div>
+</div>
+</nav>
+<div class="page-container">
+<div class="breadcrumb">
+<a href="home.html">首页</a>
+<el-icon><arrow-right /></el-icon>
+<a href="publish.html">发布信息</a>
+<el-icon><arrow-right /></el-icon>
+<span>发布失物招领</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2">
+<div class="form-section">
+<h2 class="text-xl font-bold text-slate-800 mb-6">类型选择</h2>
+<div class="type-selector">
+<div class="type-option" :class="{active: form.lostType === 'found'}" @click="form.lostType = 'found'">
+<el-icon :size="32" class="text-green-600 mb-2"><circle-check /></el-icon>
+<div class="font-bold text-slate-800">我拾到了物品</div>
+<div class="text-xs text-slate-500">发布招领信息</div>
+</div>
+<div class="type-option" :class="{active: form.lostType === 'lost'}" @click="form.lostType = 'lost'">
+<el-icon :size="32" class="text-red-600 mb-2"><search /></el-icon>
+<div class="font-bold text-slate-800">我丢失了物品</div>
+<div class="text-xs text-slate-500">发布寻物信息</div>
+</div>
+</div>
+</div>
+<div class="form-section">
+<h2 class="text-xl font-bold text-slate-800 mb-6">物品信息</h2>
+<el-form label-position="top">
+<el-form-item label="物品名称" required>
+<el-input v-model="form.itemName" placeholder="例如：校园卡、钥匙、耳机等" size="large"></el-input>
+</el-form-item>
+<div class="grid grid-cols-2 gap-4">
+<el-form-item label="丢失/拾到时间" required>
+<el-date-picker v-model="form.eventTime" type="datetime" placeholder="选择时间" size="large" class="w-full"></el-date-picker>
+</el-form-item>
+<el-form-item label="所在校区" required>
+<el-select v-model="form.campus" placeholder="选择校区" size="large" class="w-full">
+<el-option label="北校区" value="north"></el-option>
+<el-option label="南校区" value="south"></el-option>
+<el-option label="东校区" value="east"></el-option>
+<el-option label="西校区" value="west"></el-option>
+</el-select>
+</el-form-item>
+</div>
+<el-form-item label="丢失/拾到地点" required>
+<el-input v-model="form.location" placeholder="例如：东区食堂三楼门口" size="large"></el-input>
+</el-form-item>
+<el-form-item label="物品特征" required>
+<el-input v-model="form.features" type="textarea" :rows="3" placeholder="请详细描述物品的颜色、品牌、特征等，例如：蓝色卡套，上面有卡通图案..."></el-input>
+</el-form-item>
+</el-form>
+</div>
+<div class="form-section">
+<h2 class="text-xl font-bold text-slate-800 mb-6">物品图片</h2>
+<div class="upload-area">
+<el-icon :size="48" class="text-slate-300 mb-2"><upload-filled /></el-icon>
+<p class="text-slate-500 mb-1">点击或拖拽上传图片</p>
+<p class="text-xs text-slate-400">上传物品照片有助于快速找回/认领</p>
+</div>
+</div>
+<div class="form-section">
+<h2 class="text-xl font-bold text-slate-800 mb-6">联系信息</h2>
+<el-form label-position="top">
+<el-form-item label="联系方式" required>
+<el-input v-model="form.contact" placeholder="例如：可通过站内消息联系，或到XX地点领取" size="large"></el-input>
+</el-form-item>
+<el-form-item label="详细描述">
+<el-input v-model="form.description" type="textarea" :rows="4" placeholder="补充说明，例如：已将物品交至某处、领取需要携带证件等..."></el-input>
+</el-form-item>
+</el-form>
+</div>
+<div class="flex gap-4">
+<el-button type="primary" size="large" class="flex-1"><el-icon class="mr-1"><check /></el-icon> 立即发布</el-button>
+<el-button size="large"><el-icon class="mr-1"><document /></el-icon> 保存草稿</el-button>
+</div>
+</div>
+<div class="lg:col-span-1">
+<div class="bg-rose-50 rounded-xl p-6 border border-rose-200 mb-4">
+<h3 class="font-bold text-rose-800 mb-2 flex items-center gap-2"><el-icon><info-filled /></el-icon> 发布提示</h3>
+<ul class="text-sm text-rose-700 space-y-2">
+<li>· 准确描述物品特征有助于确认归属</li>
+<li>· 拾到物品建议交至失物招领处</li>
+<li>· 保护个人隐私，不要透露敏感信息</li>
+<li>· 找到物品后请及时更新状态</li>
+</ul>
+</div>
+<div class="bg-white rounded-xl p-6 border border-slate-100">
+<h3 class="font-bold text-slate-800 mb-4">找回小贴士</h3>
+<div class="space-y-3 text-sm text-slate-600">
+<p>1. 尽量详细描述物品特征</p>
+<p>2. 提供准确的丢失地点和时间</p>
+<p>3. 上传清晰的物品照片</p>
+<p>4. 保持联系方式畅通</p>
+<p>5. 及时关注消息回复</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class="bg-slate-800 text-slate-400 py-8 mt-12">
+<div class="page-container text-center"><p class="text-sm">校园轻集市 - 让校园生活更便捷</p></div>
+</footer>
+</div>
+<script>
+const { createApp, ref } = Vue;
+const app = createApp({
+setup() {
+const form = ref({ lostType: 'found', itemName: '', eventTime: '', campus: '', location: '', features: '', contact: '', description: '' });
+return { form };
+}
+});
+app.use(ElementPlus);
+app.mount('#app');
+</script>
+</body>
+</html>

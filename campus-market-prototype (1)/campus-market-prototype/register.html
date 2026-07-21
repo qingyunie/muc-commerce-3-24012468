@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>注册 - 校园轻集市</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<script src="https://unpkg.com/element-plus"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.register-bg { background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 50%, #1E40AF 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
+.register-card { background: white; border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); width: 100%; max-width: 480px; padding: 40px; }
+</style>
+</head>
+<body>
+<div id="app">
+<div class="register-bg">
+<div class="register-card">
+<div class="text-center mb-8">
+<div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+<el-icon :size="32" class="text-blue-600"><shop /></el-icon>
+</div>
+<h1 class="text-2xl font-bold text-slate-800">注册校园轻集市</h1>
+<p class="text-sm text-slate-500 mt-2">加入校园轻集市，开启便捷校园生活</p>
+</div>
+<el-steps :active="activeStep" finish-status="success" class="mb-8">
+<el-step title="基本信息"></el-step>
+<el-step title="校区信息"></el-step>
+<el-step title="完成注册"></el-step>
+</el-steps>
+<el-form v-if="activeStep === 0">
+<el-form-item>
+<el-input v-model="form.username" placeholder="学号" size="large" prefix-icon="User"></el-input>
+</el-form-item>
+<el-form-item>
+<el-input v-model="form.nickname" placeholder="昵称" size="large" prefix-icon="Avatar"></el-input>
+</el-form-item>
+<el-form-item>
+<el-input v-model="form.phone" placeholder="手机号" size="large" prefix-icon="Phone"></el-input>
+</el-form-item>
+<el-form-item>
+<el-input v-model="form.password" type="password" placeholder="设置密码" size="large" prefix-icon="Lock" show-password></el-input>
+</el-form-item>
+<el-form-item>
+<el-input v-model="form.confirmPassword" type="password" placeholder="确认密码" size="large" prefix-icon="Lock" show-password></el-input>
+</el-form-item>
+<el-button type="primary" size="large" class="w-full" @click="activeStep = 1">下一步</el-button>
+</el-form>
+<el-form v-if="activeStep === 1">
+<el-form-item label="学院">
+<el-select v-model="form.college" placeholder="选择学院" size="large" class="w-full">
+<el-option label="计算机学院" value="cs"></el-option>
+<el-option label="电子信息学院" value="ee"></el-option>
+<el-option label="经济管理学院" value="em"></el-option>
+<el-option label="外国语学院" value="fl"></el-option>
+<el-option label="机械工程学院" value="me"></el-option>
+</el-select>
+</el-form-item>
+<el-form-item label="校区">
+<el-select v-model="form.campus" placeholder="选择校区" size="large" class="w-full">
+<el-option label="北校区" value="north"></el-option>
+<el-option label="南校区" value="south"></el-option>
+<el-option label="东校区" value="east"></el-option>
+<el-option label="西校区" value="west"></el-option>
+</el-select>
+</el-form-item>
+<el-form-item label="年级">
+<el-select v-model="form.grade" placeholder="选择年级" size="large" class="w-full">
+<el-option label="2024级" value="2024"></el-option>
+<el-option label="2023级" value="2023"></el-option>
+<el-option label="2022级" value="2022"></el-option>
+<el-option label="2021级" value="2021"></el-option>
+</el-select>
+</el-form-item>
+<div class="flex gap-4">
+<el-button size="large" class="flex-1" @click="activeStep = 0">上一步</el-button>
+<el-button type="primary" size="large" class="flex-1" @click="activeStep = 2">下一步</el-button>
+</div>
+</el-form>
+<div v-if="activeStep === 2" class="text-center">
+<div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+<el-icon :size="40" class="text-green-600"><circle-check /></el-icon>
+</div>
+<h2 class="text-xl font-bold text-slate-800 mb-2">注册成功！</h2>
+<p class="text-sm text-slate-500 mb-6">欢迎加入校园轻集市，开始你的校园便捷生活</p>
+<a href="home.html" class="block"><el-button type="primary" size="large" class="w-full">进入首页</el-button></a>
+</div>
+<div class="text-center mt-6 text-sm text-slate-500">
+已有账号？<a href="login.html" class="text-blue-600 hover:text-blue-700 font-medium">立即登录</a>
+</div>
+</div>
+</div>
+</div>
+<script>
+const { createApp, ref } = Vue;
+const app = createApp({
+setup() {
+const activeStep = ref(0);
+const form = ref({ username: '', nickname: '', phone: '', password: '', confirmPassword: '', college: '', campus: '', grade: '' });
+return { activeStep, form };
+}
+});
+app.use(ElementPlus);
+app.mount('#app');
+</script>
+</body>
+</html>

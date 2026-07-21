@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理后台 - 校园轻集市</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<script src="https://unpkg.com/element-plus"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.admin-sidebar { background: #1e293b; color: white; min-height: 100vh; width: 240px; position: fixed; left: 0; top: 0; }
+.admin-main { margin-left: 240px; min-height: 100vh; background: #f8fafc; }
+.stat-card { background: white; border-radius: 12px; padding: 24px; border: 1px solid #e2e8f0; transition: all 0.3s; }
+.stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+.menu-item { padding: 12px 24px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,0.7); text-decoration: none; }
+.menu-item:hover, .menu-item.active { background: #2563EB; color: white; }
+</style>
+</head>
+<body>
+<div id="app">
+<div class="admin-sidebar">
+<div class="p-6 border-b border-slate-700">
+<div class="flex items-center gap-3">
+<el-icon :size="28"><shop /></el-icon>
+<span class="text-xl font-bold">管理后台</span>
+</div>
+</div>
+<div class="py-4">
+<a href="admin-dashboard.html" class="menu-item active"><el-icon><data-line /></el-icon><span>数据概览</span></a>
+<a href="admin-review.html" class="menu-item"><el-icon><check /></el-icon><span>信息审核</span><el-badge :value="12" class="ml-auto"></el-badge></a>
+<a href="category.html" class="menu-item"><el-icon><grid /></el-icon><span>信息管理</span></a>
+<div class="menu-item"><el-icon><user /></el-icon><span>用户管理</span></div>
+<div class="menu-item"><el-icon><warning /></el-icon><span>举报处理</span><el-badge :value="3" class="ml-auto" type="danger"></el-badge></div>
+<div class="menu-item"><el-icon><setting /></el-icon><span>系统设置</span></div>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-6 border-t border-slate-700">
+<a href="home.html" class="flex items-center gap-2 text-slate-400 hover:text-white transition"><el-icon><arrow-left /></el-icon><span>返回前台</span></a>
+</div>
+</div>
+<div class="admin-main">
+<div class="bg-white border-b border-slate-200 p-4 flex items-center justify-between">
+<h1 class="text-xl font-bold text-slate-800">数据概览</h1>
+<div class="flex items-center gap-4">
+<span class="text-sm text-slate-500">2026年7月21日</span>
+<el-avatar :size="36" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar>
+</div>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="stat-card">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center"><el-icon :size="24" class="text-blue-600"><document /></el-icon></div>
+<span class="text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full">+12%</span>
+</div>
+<div class="text-2xl font-bold text-slate-800">1,286</div>
+<div class="text-sm text-slate-500 mt-1">今日新增信息</div>
+</div>
+<div class="stat-card">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center"><el-icon :size="24" class="text-orange-600"><check /></el-icon></div>
+<span class="text-xs text-red-600 bg-red-50 px-2 py-1 rounded-full">待处理</span>
+</div>
+<div class="text-2xl font-bold text-slate-800">12</div>
+<div class="text-sm text-slate-500 mt-1">待审核信息</div>
+</div>
+<div class="stat-card">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center"><el-icon :size="24" class="text-green-600"><user /></el-icon></div>
+<span class="text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full">+5%</span>
+</div>
+<div class="text-2xl font-bold text-slate-800">3,567</div>
+<div class="text-sm text-slate-500 mt-1">注册用户</div>
+</div>
+<div class="stat-card">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center"><el-icon :size="24" class="text-red-600"><warning /></el-icon></div>
+<span class="text-xs text-red-600 bg-red-50 px-2 py-1 rounded-full">需关注</span>
+</div>
+<div class="text-2xl font-bold text-slate-800">3</div>
+<div class="text-sm text-slate-500 mt-1">待处理举报</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<a href="admin-review.html" class="bg-white rounded-xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition flex items-center gap-4">
+<div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center"><el-icon :size="28" class="text-blue-600"><check /></el-icon></div>
+<div><h3 class="font-bold text-slate-800">信息审核</h3><p class="text-sm text-slate-500">12 条待审核</p></div>
+</a>
+<a href="category.html" class="bg-white rounded-xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition flex items-center gap-4">
+<div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center"><el-icon :size="28" class="text-green-600"><grid /></el-icon></div>
+<div><h3 class="font-bold text-slate-800">信息管理</h3><p class="text-sm text-slate-500">管理所有信息</p></div>
+</a>
+<div class="bg-white rounded-xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition flex items-center gap-4 cursor-pointer">
+<div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center"><el-icon :size="28" class="text-red-600"><warning /></el-icon></div>
+<div><h3 class="font-bold text-slate-800">举报处理</h3><p class="text-sm text-slate-500">3 条待处理</p></div>
+</div>
+</div>
+<div class="bg-white rounded-xl border border-slate-100 shadow-sm">
+<div class="p-6 border-b border-slate-100 flex items-center justify-between">
+<h2 class="text-lg font-bold text-slate-800">最近审核记录</h2>
+<a href="admin-review.html" class="text-sm text-blue-600 hover:text-blue-700">查看全部</a>
+</div>
+<el-table :data="reviewRecords" style="width: 100%">
+<el-table-column prop="id" label="编号" width="120"></el-table-column>
+<el-table-column prop="title" label="信息标题"></el-table-column>
+<el-table-column prop="type" label="类型" width="100">
+<template #default="scope">
+<el-tag :type="scope.row.type === '二手' ? 'warning' : 'info'" size="small">{{ scope.row.type }}</el-tag>
+</template>
+</el-table-column>
+<el-table-column prop="publisher" label="发布者" width="120"></el-table-column>
+<el-table-column prop="time" label="提交时间" width="180"></el-table-column>
+<el-table-column prop="status" label="状态" width="100">
+<template #default="scope">
+<el-tag :type="scope.row.status === '已通过' ? 'success' : 'danger'" size="small">{{ scope.row.status }}</el-tag>
+</template>
+</el-table-column>
+</el-table>
+</div>
+</div>
+</div>
+</div>
+<script>
+const { createApp, ref } = Vue;
+const app = createApp({
+setup() {
+const reviewRecords = ref([
+{ id: 'SH20260721001', title: '出闲置教材《软件工程导论》', type: '二手', publisher: '李同学', time: '2026-07-21 10:00', status: '已通过' },
+{ id: 'LF20260721005', title: '拾到校园卡一张', type: '失物', publisher: '王同学', time: '2026-07-21 09:30', status: '已通过' },
+{ id: 'GP20260721003', title: '东区食堂奶茶拼单', type: '拼单', publisher: '陈同学', time: '2026-07-21 09:00', status: '已驳回' }
+]);
+return { reviewRecords };
+}
+});
+app.use(ElementPlus);
+app.mount('#app');
+</script>
+</body>
+</html>

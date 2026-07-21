@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>失物招领详情 - 校园轻集市</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <script src="https://unpkg.com/element-plus"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/common.css">
+    <style>
+        .lost-status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .status-searching { background: #FEE2E2; color: #DC2626; }
+        .status-found { background: #D1FAE5; color: #059669; }
+        .status-returned { background: #DBEAFE; color: #2563EB; }
+        .info-row {
+            display: flex;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .info-row:last-child { border-bottom: none; }
+        .info-label {
+            width: 100px;
+            color: #64748b;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .info-value {
+            flex: 1;
+            color: #1e293b;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 24px;
+            padding-bottom: 20px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #2563EB;
+        }
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 20px;
+            width: 2px;
+            height: calc(100% - 10px);
+            background: #e2e8f0;
+        }
+        .timeline-item:last-child::after { display: none; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+    <div id="app">
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="home.html" class="logo">
+                    <el-icon :size="28"><shop /></el-icon>
+                    <span>校园轻集市</span>
+                </a>
+                <div class="nav-links">
+                    <a href="home.html"><el-icon :size="16"><home-filled /></el-icon> 首页</a>
+                    <a href="category.html"><el-icon :size="16"><grid /></el-icon> 集市浏览</a>
+                    <a href="publish.html"><el-icon :size="16"><circle-plus /></el-icon> 发布信息</a>
+                    <a href="messages.html"><el-icon :size="16"><chat-dot-round /></el-icon> 消息</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="profile.html" class="flex items-center gap-2 text-white/90 hover:text-white transition">
+                        <el-avatar :size="32" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar>
+                        <span class="text-sm">张同学</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="page-container">
+            <div class="breadcrumb">
+                <a href="home.html">首页</a>
+                <el-icon><arrow-right /></el-icon>
+                <a href="category.html">集市浏览</a>
+                <el-icon><arrow-right /></el-icon>
+                <a href="category.html?type=lostfound">失物招领</a>
+                <el-icon><arrow-right /></el-icon>
+                <span>详情</span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2">
+                    <!-- 物品图片 -->
+                    <div class="bg-white rounded-xl p-4 border border-slate-100 shadow-sm mb-6">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&h=500&fit=crop" 
+                             alt="校园卡" class="w-full h-80 object-cover rounded-lg">
+                        <div class="flex gap-2 mt-3">
+                            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=150&h=150&fit=crop" class="w-20 h-20 object-cover rounded-lg border-2 border-blue-500 cursor-pointer">
+                            <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=150&h=150&fit=crop" class="w-20 h-20 object-cover rounded-lg border-2 border-transparent cursor-pointer hover:border-blue-300">
+                        </div>
+                    </div>
+
+                    <!-- 物品信息 -->
+                    <div class="bg-white rounded-xl p-6 border border-slate-100 shadow-sm mb-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <span class="tag tag-danger">失物招领</span>
+                                <span class="lost-status-badge status-searching">
+                                    <el-icon class="mr-1"><search /></el-icon> 招领中
+                                </span>
+                            </div>
+                            <span class="text-sm text-slate-400">编号：LF20260721005</span>
+                        </div>
+                        <h1 class="text-2xl font-bold text-slate-800 mb-4">拾到校园卡一张，请失主联系</h1>
+
+                        <div class="info-row">
+                            <span class="info-label">物品名称</span>
+                            <span class="info-value">校园卡</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">拾到/丢失</span>
+                            <span class="info-value flex items-center gap-1">
+                                <el-icon class="text-green-600"><circle-check /></el-icon> 拾到物品
+                            </span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">拾到时间</span>
+                            <span class="info-value">2026年7月21日 12:30</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">拾到地点</span>
+                            <span class="info-value">东区食堂三楼门口</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">所在校区</span>
+                            <span class="info-value">东校区</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">物品特征</span>
+                            <span class="info-value">蓝色卡套，姓名模糊，卡号后四位8866</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">联系方式</span>
+                            <span class="info-value">可通过站内消息联系，或到东区食堂三楼失物招领处</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">发布时间</span>
+                            <span class="info-value">20分钟前</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">浏览次数</span>
+                            <span class="info-value">56 次</span>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-slate-100">
+                            <h3 class="font-bold text-slate-800 mb-3">详细描述</h3>
+                            <p class="text-slate-600 leading-relaxed">
+                                今天中午在东区食堂三楼门口捡到一张校园卡，卡套是蓝色的，上面有卡通图案。姓名部分有点模糊，但卡号后四位是8866。
+                                我已经把卡交给食堂三楼的服务台了，失主可以直接去服务台认领，或者通过站内消息联系我确认细节。
+                                请大家帮忙转发，让失主尽快看到！
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 状态更新时间线 -->
+                    <div class="bg-white rounded-xl p-6 border border-slate-100 shadow-sm mb-6">
+                        <h3 class="font-bold text-slate-800 mb-4">状态更新</h3>
+                        <div class="timeline-item">
+                            <div class="text-sm text-slate-500 mb-1">2026-07-21 12:30</div>
+                            <div class="text-slate-700">王同学拾到校园卡，发布招领信息</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="text-sm text-slate-500 mb-1">2026-07-21 12:45</div>
+                            <div class="text-slate-700">将校园卡交至东区食堂三楼服务台</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="text-sm text-slate-500 mb-1">2026-07-21 13:00</div>
+                            <div class="text-slate-700">信息审核通过，对外展示</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-1">
+                    <!-- 发布者信息 -->
+                    <div class="bg-white rounded-xl p-6 border border-slate-100 shadow-sm mb-6">
+                        <div class="flex items-center gap-4 mb-4">
+                            <el-avatar :size="56" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"></el-avatar>
+                            <div>
+                                <h3 class="font-bold text-slate-800">王同学</h3>
+                                <p class="text-sm text-slate-500">电子信息学院 · 东校区</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 mb-4 p-3 bg-green-50 rounded-lg">
+                            <el-icon class="text-green-600"><medal /></el-icon>
+                            <span class="text-sm text-green-700">热心助人指数：92分</span>
+                        </div>
+                        <div class="space-y-2">
+                            <el-button type="primary" size="large" class="w-full" @click="showContact = true">
+                                <el-icon class="mr-1"><chat-dot-round /></el-icon> 联系发布者
+                            </el-button>
+                            <el-button :type="isFavorited ? 'danger' : 'default'" size="large" class="w-full" @click="isFavorited = !isFavorited">
+                                <el-icon class="mr-1"><star-filled v-if="isFavorited" /><star v-else /></el-icon>
+                                {{ isFavorited ? '已收藏' : '收藏信息' }}
+                            </el-button>
+                        </div>
+                    </div>
+
+                    <!-- 认领按钮 -->
+                    <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200 mb-6">
+                        <div class="text-center">
+                            <el-icon :size="48" class="text-green-500 mb-3"><circle-check /></el-icon>
+                            <h3 class="font-bold text-green-800 mb-2">这是您的物品吗？</h3>
+                            <p class="text-sm text-green-600 mb-4">如果是您的物品，请联系发布者确认细节并领取</p>
+                            <el-button type="success" size="large" class="w-full" @click="showClaim = true">
+                                <el-icon class="mr-1"><check /></el-icon> 确认认领
+                            </el-button>
+                        </div>
+                    </div>
+
+                    <!-- 安全提示 -->
+                    <div class="bg-amber-50 rounded-xl p-4 border border-amber-200 mb-6">
+                        <div class="flex items-center gap-2 mb-2">
+                            <el-icon class="text-amber-600"><warning /></el-icon>
+                            <span class="font-semibold text-amber-800">认领须知</span>
+                        </div>
+                        <ul class="text-sm text-amber-700 space-y-1">
+                            <li>· 请准确描述物品特征</li>
+                            <li>· 建议携带身份证或学生证</li>
+                            <li>· 在公共场所交接</li>
+                            <li>· 确认无误后再离开</li>
+                        </ul>
+                    </div>
+
+                    <!-- 相关推荐 -->
+                    <div class="bg-white rounded-xl p-6 border border-slate-100 shadow-sm">
+                        <h3 class="font-bold text-slate-800 mb-4">相关失物信息</h3>
+                        <div class="space-y-4">
+                            <a href="lost-detail.html" class="flex gap-3 p-3 rounded-lg hover:bg-slate-50 transition">
+                                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100&h=100&fit=crop" class="w-16 h-16 object-cover rounded-lg">
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="text-sm font-medium text-slate-800 truncate">西门打印店附近丢失黑色耳机盒</h4>
+                                    <p class="text-xs text-slate-400 mt-1">西校区 · 寻找中</p>
+                                </div>
+                            </a>
+                            <a href="lost-detail.html" class="flex gap-3 p-3 rounded-lg hover:bg-slate-50 transition">
+                                <img src="https://images.unsplash.com/photo-1595855759920-86582396798b?w=100&h=100&fit=crop" class="w-16 h-16 object-cover rounded-lg">
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="text-sm font-medium text-slate-800 truncate">图书馆丢失钥匙一串，有U盘</h4>
+                                    <p class="text-xs text-slate-400 mt-1">北校区 · 已找回</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 联系弹窗 -->
+        <el-dialog v-model="showContact" title="联系发布者" width="500px">
+            <div class="flex items-center gap-3 mb-4 p-4 bg-slate-50 rounded-lg">
+                <el-avatar :size="40" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"></el-avatar>
+                <div>
+                    <div class="font-semibold">王同学</div>
+                    <div class="text-xs text-slate-500">电子信息学院</div>
+                </div>
+            </div>
+            <el-form label-position="top">
+                <el-form-item label="消息内容">
+                    <el-input type="textarea" :rows="4" placeholder="请描述您的物品特征，以便确认..."></el-input>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <el-button @click="showContact = false">取消</el-button>
+                <el-button type="primary" @click="showContact = false">
+                    <el-icon class="mr-1"><chat-dot-round /></el-icon> 发送消息
+                </el-button>
+            </template>
+        </el-dialog>
+
+        <!-- 认领弹窗 -->
+        <el-dialog v-model="showClaim" title="确认认领" width="500px">
+            <el-alert title="请确认以下信息" type="info" :closable="false" class="mb-4">
+                <div class="text-sm mt-2">确认认领后，系统将通知发布者，并生成认领记录。</div>
+            </el-alert>
+            <el-form label-position="top">
+                <el-form-item label="物品特征确认">
+                    <el-input placeholder="请描述物品细节以确认归属..."></el-input>
+                </el-form-item>
+                <el-form-item label="联系方式">
+                    <el-input placeholder="请输入您的手机号或微信号"></el-input>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <el-button @click="showClaim = false">取消</el-button>
+                <el-button type="success" @click="showClaim = false">
+                    <el-icon class="mr-1"><check /></el-icon> 确认认领
+                </el-button>
+            </template>
+        </el-dialog>
+
+        <footer class="bg-slate-800 text-slate-400 py-8 mt-12">
+            <div class="page-container text-center">
+                <p class="text-sm">校园轻集市 - 让校园生活更便捷</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue
+        const app = createApp({
+            setup() {
+                const isFavorited = ref(false)
+                const showContact = ref(false)
+                const showClaim = ref(false)
+                return { isFavorited, showContact, showClaim }
+            }
+        })
+        app.use(ElementPlus)
+        app.mount('#app')
+    </script>
+</body>
+</html>

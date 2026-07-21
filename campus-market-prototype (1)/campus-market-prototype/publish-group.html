@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>发布拼单搭子 - 校园轻集市</title>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+<script src="https://unpkg.com/element-plus"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.form-section { background: white; border-radius: 12px; padding: 24px; margin-bottom: 16px; border: 1px solid #e2e8f0; }
+</style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+<div id="app">
+<nav class="navbar">
+<div class="nav-container">
+<a href="home.html" class="logo"><el-icon :size="28"><shop /></el-icon><span>校园轻集市</span></a>
+<div class="nav-links">
+<a href="home.html"><el-icon :size="16"><home-filled /></el-icon> 首页</a>
+<a href="category.html"><el-icon :size="16"><grid /></el-icon> 集市浏览</a>
+<a href="publish.html" class="active"><el-icon :size="16"><circle-plus /></el-icon> 发布信息</a>
+<a href="messages.html"><el-icon :size="16"><chat-dot-round /></el-icon> 消息</a>
+</div>
+<div class="flex items-center gap-4">
+<a href="profile.html" class="flex items-center gap-2 text-white/90 hover:text-white transition">
+<el-avatar :size="32" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face"></el-avatar>
+<span class="text-sm">张同学</span>
+</a>
+</div>
+</div>
+</nav>
+<div class="page-container">
+<div class="breadcrumb">
+<a href="home.html">首页</a>
+<el-icon><arrow-right /></el-icon>
+<a href="publish.html">发布信息</a>
+<el-icon><arrow-right /></el-icon>
+<span>发布拼单搭子</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2">
+<div class="form-section">
+<h2 class="text-xl font-bold text-slate-800 mb-6">拼单信息</h2>
+<el-form label-position="top">
+<el-form-item label="拼单主题" required>
+<el-input v-model="form.title" placeholder="例如：东区食堂三楼拼奶茶" size="large"></el-input>
+</el-form-item>
+<el-form-item label="拼单类型" required>
+<el-select v-model="form.groupType" placeholder="选择类型" size="large" class="w-full">
+<el-option label="奶茶/饮品拼单" value="drink"></el-option>
+<el-option label="外卖拼单" value="food"></el-option>
+<el-option label="水果团购" value="fruit"></el-option>
+<el-option label="拼车出行" value="carpool"></el-option>
+<el-option label="学习搭子" value="study"></el-option>
+<el-option label="运动搭子" value="sports"></el-option>
+<el-option label="其他" value="other"></el-option>
+</el-select>
+</el-form-item>
+<div class="grid grid-cols-2 gap-4">
+<el-form-item label="目标人数" required>
+<el-input v-model="form.targetCount" placeholder="例如：5" size="large" type="number"><template #append>人</template></el-input>
+</el-form-item>
+<el-form-item label="当前人数">
+<el-input v-model="form.currentCount" placeholder="例如：1" size="large" type="number"><template #append>人</template></el-input>
+</el-form-item>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<el-form-item label="截止时间" required>
+<el-date-picker v-model="form.deadline" type="datetime" placeholder="选择截止时间" size="large" class="w-full"></el-date-picker>
+</el-form-item>
+<el-form-item label="集合地点" required>
+<el-input v-model="form.location" placeholder="例如：东区食堂三楼" size="large"></el-input>
+</el-form-item>
+</div>
+<el-form-item label="所在校区" required>
+<el-select v-model="form.campus" placeholder="选择校区" size="large" class="w-full">
+<el-option label="北校区" value="north"></el-option>
+<el-option label="南校区" value="south"></el-option>
+<el-option label="东校区" value="east"></el-option>
+<el-option label="西校区" value="west"></el-option>
+</el-select>
+</el-form-item>
+<el-form-item label="人均预算（选填）">
+<el-input v-model="form.budget" placeholder="例如：15-25" size="large"><template #append>元</template></el-input>
+</el-form-item>
+<el-form-item label="拼单说明" required>
+<el-input v-model="form.description" type="textarea" :rows="5" placeholder="请详细描述拼单内容、要求、规则等..."></el-input>
+</el-form-item>
+<el-form-item label="拼单规则">
+<el-input v-model="form.rules" type="textarea" :rows="3" placeholder="例如：满5人成团、取消需提前告知等..."></el-input>
+</el-form-item>
+</el-form>
+</div>
+<div class="flex gap-4">
+<el-button type="primary" size="large" class="flex-1"><el-icon class="mr-1"><check /></el-icon> 立即发布</el-button>
+<el-button size="large"><el-icon class="mr-1"><document /></el-icon> 保存草稿</el-button>
+</div>
+</div>
+<div class="lg:col-span-1">
+<div class="bg-teal-50 rounded-xl p-6 border border-teal-200 mb-4">
+<h3 class="font-bold text-teal-800 mb-2">发布提示</h3>
+<ul class="text-sm text-teal-700 space-y-2">
+<li>· 明确拼单目标和人数要求</li>
+<li>· 设置合理的截止时间</li>
+<li>· 说明费用分摊方式</li>
+<li>· 保持消息畅通，及时更新进度</li>
+</ul>
+</div>
+<div class="bg-white rounded-xl p-6 border border-slate-100">
+<h3 class="font-bold text-slate-800 mb-4">拼单成功案例</h3>
+<div class="space-y-3 text-sm text-slate-600">
+<p>「奶茶拼单」平均5分钟成团</p>
+<p>「拼车出行」平均30分钟成团</p>
+<p>「水果团购」平均2小时成团</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class="bg-slate-800 text-slate-400 py-8 mt-12">
+<div class="page-container text-center"><p class="text-sm">校园轻集市 - 让校园生活更便捷</p></div>
+</footer>
+</div>
+<script>
+const { createApp, ref } = Vue;
+const app = createApp({
+setup() {
+const form = ref({ title: '', groupType: '', targetCount: '', currentCount: '1', deadline: '', location: '', campus: '', budget: '', description: '', rules: '' });
+return { form };
+}
+});
+app.use(ElementPlus);
+app.mount('#app');
+</script>
+</body>
+</html>
